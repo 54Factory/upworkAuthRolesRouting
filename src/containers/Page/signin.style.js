@@ -95,6 +95,12 @@ const SignInStyleWrapper = styled.div`
         }
       }
 
+      .isoSignInButton {
+        button {
+          height: 42px;
+        }
+      }
+
       .isoHelperText {
         font-size: 12px;
         font-weight: 400;
@@ -128,10 +134,6 @@ const SignInStyleWrapper = styled.div`
       }
 
       .isoOtherLogin {
-        padding-top: 40px;
-        margin-top: 35px;
-        border-top: 1px dashed ${palette("grayscale", 2)};
-
         > a {
           display: flex;
           margin-bottom: 10px;
@@ -151,22 +153,20 @@ const SignInStyleWrapper = styled.div`
             background-color: #3b5998;
 
             &:hover {
-              background-color: darken(#3b5998, 5%);
+              background-color: #324b81;
             }
           }
 
           &.btnGooglePlus {
             background-color: #dd4b39;
-            margin-top: 15px;
 
             &:hover {
-              background-color: darken(#dd4b39, 5%);
+              background-color: #c43421;
             }
           }
 
           &.btnAuthZero {
             background-color: #e14615;
-            margin-top: 15px;
 
             &:hover {
               background-color: darken(#e14615, 5%);
@@ -175,7 +175,6 @@ const SignInStyleWrapper = styled.div`
 
           &.btnFirebase {
             background-color: ${palette("color", 5)};
-            margin-top: 15px;
 
             &:hover {
               background-color: ${palette("color", 6)};
@@ -185,13 +184,14 @@ const SignInStyleWrapper = styled.div`
       }
 
       .isoForgotPass {
-        font-size: 12px;
-        color: ${palette("text", 3)};
+        font-size: 14px;
+        color: ${palette("primary", 0)};
         margin-bottom: 10px;
+        margin-top: 10px;
         text-decoration: none;
 
         &:hover {
-          color: ${palette("primary", 0)};
+          color: ${palette("primary", 1)};
         }
       }
 

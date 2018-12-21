@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 //import Input from '../../components/uielements/input';
-//import Checkbox from '../../components/uielements/checkbox';
+import Checkbox from '../../components/uielements/checkbox';
 import Button from '../../components/uielements/button';
 import authAction from '../../redux/auth/actions';
 import IntlMessages from '../../components/utility/intlMessages';
@@ -115,7 +115,8 @@ class SignIn extends Component {
                 validateStatus={this.state.validateStatus.email}
                 help={this.state.errors.email}
               >
-                <Input size="large"
+                <Input
+                  size="large"
                   value={this.state.email}
                   onChange={this.onChange}
                   prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -129,7 +130,8 @@ class SignIn extends Component {
                 validateStatus={this.state.validateStatus.password}
                 help={this.state.errors.password}
               >
-                <Input size="large"
+                <Input
+                  size="large"
                   value={this.state.password}
                   onChange={this.onChange}
                   prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -138,24 +140,32 @@ class SignIn extends Component {
                 />
               </FormItem>
 
-              <div className="isoInputWrapper isoLeftRightComponent">
-                <Button type="primary" htmlType="submit">
-                  <IntlMessages id="page.signInButton" />
-                </Button>
+              <div className="isoLeftRightComponent">
+                <Checkbox>
+                  <IntlMessages id="page.signInRememberMe" />
+                </Checkbox>
+                <Link to="" className="isoForgotPass">
+                  <IntlMessages id="page.signInForgotPass" />
+                </Link>
               </div>
 
+              <FormItem className="isoSignInButton">
+                <Button block type="primary" htmlType="submit">
+                  <IntlMessages id="page.signInButton" />
+                </Button>
+              </FormItem>
+
               <div className="isoInputWrapper isoOtherLogin">
+                {/**
                 <Button onClick={e => this.handleLogin(e, 'facebook')} type="primary btnFacebook">
                   <IntlMessages id="page.signInFacebook" />
                 </Button>
+                */}
                 <Button onClick={e => this.handleLogin(e, 'google')} type="primary btnGooglePlus">
                   <IntlMessages id="page.signInGooglePlus" />
                 </Button>
               </div>
               <div className="isoCenterComponent isoHelperWrapper">
-                <Link to="" className="isoForgotPass">
-                  <IntlMessages id="page.signInForgotPass" />
-                </Link>
                 <Link to="">
                   <IntlMessages id="page.signInCreateAccount" />
                 </Link>
