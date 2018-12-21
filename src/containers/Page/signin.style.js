@@ -134,6 +134,7 @@ const SignInStyleWrapper = styled.div`
       }
 
       .isoOtherLogin {
+        margin-top: 15px;
         > a {
           display: flex;
           margin-bottom: 10px;
@@ -151,6 +152,7 @@ const SignInStyleWrapper = styled.div`
 
           &.btnFacebook {
             background-color: #3b5998;
+            margin-bottom: 15px;
 
             &:hover {
               background-color: #324b81;
@@ -159,6 +161,7 @@ const SignInStyleWrapper = styled.div`
 
           &.btnGooglePlus {
             background-color: #dd4b39;
+            margin-bottom: 15px;
 
             &:hover {
               background-color: #c43421;
@@ -167,6 +170,7 @@ const SignInStyleWrapper = styled.div`
 
           &.btnAuthZero {
             background-color: #e14615;
+            margin-bottom: 15px;
 
             &:hover {
               background-color: darken(#e14615, 5%);
