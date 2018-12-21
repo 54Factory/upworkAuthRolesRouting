@@ -23,6 +23,7 @@ const RestrictedRoute = ({ component: Component, isLoggedIn, ...rest }) => (
     }
   />
 );
+
 const PublicRoutes = ({ history, isLoggedIn }) => {
   return (
     <ConnectedRouter history={history}>
@@ -48,5 +49,5 @@ const PublicRoutes = ({ history, isLoggedIn }) => {
 };
 
 export default connect(state => ({
-  isLoggedIn: state.Auth.idToken !== null
+  isLoggedIn: state.Auth.user !== null
 }))(PublicRoutes);

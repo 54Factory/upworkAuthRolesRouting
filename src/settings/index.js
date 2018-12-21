@@ -20,4 +20,15 @@ const jwtConfig = {
   secretKey: 'secretKey',
 };
 
-export { siteConfig, language, themeConfig, jwtConfig };
+const firebaseConfig = {
+  projectId: 'test-74eb3',
+  authDomain: 'test-74eb3.firebaseapp.com',
+  databaseURL: 'https://test-74eb3.firebaseio.com/',
+  apiKey: 'AIzaSyBY3GoyXaef8VHNiZ4i-r251bjQNEDmEzY'
+};
+
+export {
+  siteConfig, language,
+  themeConfig, jwtConfig,
+  firebaseConfig
+};

@@ -14,8 +14,10 @@ const middlewares = [thunk, sagaMiddleware, routeMiddleware];
 const store = createStore(
   combineReducers({
     ...reducers,
-    router: routerReducer
+    router: routerReducer,
   }),
+  /** middleware used for debuggin, disable in production */
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
   compose(applyMiddleware(...middlewares))
 );
 sagaMiddleware.run(rootSaga);
