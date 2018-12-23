@@ -49,6 +49,12 @@ class FirebaseHelper {
       case 'auth/user-disabled':
         errorMessage = 'User has been disabled';
         break;
+      case 'auth/email-already-in-use':
+        errorMessage = 'A User with that email already exists';
+        break;
+      case 'auth/weak-password':
+        errorMessage = 'Your password is too weak';
+        break;
       default:
         errorMessage = 'Authentication Error';
         break;

@@ -7,8 +7,31 @@ import notification from '../../components/notification';
 
 import firebase from 'firebase';
 
+export function* signupRequest() {
+  yield takeEvery(actions.SIGNUP_REQUEST, function*(action) {
+    try {
+      const { email, password } = action.info;
+      yield call(
+        firebaseHelper.rsf.auth.createUserWithEmailAndPassword,
+        email,
+        password);
+    } catch (err) {
+      yield put({
+        type: actions.SIGNUP_ERROR,
+        error: firebaseHelper.handleAuthError(err)
+      });
+    }
+  })
+}
+
+export function* signupError() {
+  yield takeEvery(actions.SIGNUP_ERROR, function*(payload) {
+    yield call(notification, 'error', payload.error);
+  });
+}
+
 export function* loginRequest() {
-  yield takeEvery('LOGIN_REQUEST', function*(action) {
+  yield takeEvery(actions.LOGIN_REQUEST, function*(action) {
     try {
       let provider;
       let method;
@@ -60,12 +83,6 @@ export function* logout() {
   });
 }
 
-//export function* checkAuth() {
-//  yield takeEvery(actions.CHECK_AUTHORIZATION, function*() {
-//
-//  });
-//}
-
 export function* syncUser() {
   const channel = yield call(firebaseHelper.rsf.auth.channel);
 
@@ -85,11 +102,12 @@ export function* syncUser() {
 
 export default function* rootSaga() {
   yield all([
+    fork(signupRequest),
+    fork(signupError),
     fork(loginRequest),
     fork(loginSuccess),
     fork(loginError),
     fork(logout),
     fork(syncUser),
-    //    fork(checkAuth)
   ]);
 }

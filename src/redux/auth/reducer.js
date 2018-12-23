@@ -7,6 +7,12 @@ const initState = {
 
 export default function authReducer(state = initState, action) {
   switch (action.type) {
+    case actions.SIGNUP_ERROR:
+      return {
+        ...state,
+        error: action.error,
+        user: null
+      };
     case actions.LOGIN_SUCCESS:
       return {
         ...state,

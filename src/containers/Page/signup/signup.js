@@ -1,28 +1,38 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-//import Input from '../../components/uielements/input';
-import Checkbox from '../../components/uielements/checkbox';
-import Button from '../../components/uielements/button';
-import authAction from '../../redux/auth/actions';
-import IntlMessages from '../../components/utility/intlMessages';
-import SignInStyleWrapper from './signin.style';
+import PropTypes from 'prop-types';
+import Checkbox from '../../../components/uielements/checkbox';
+import Button from '../../../components/uielements/button';
+import authAction from '../../../redux/auth/actions';
+import IntlMessages from '../../../components/utility/intlMessages';
+import SignupStyleWrapper from './signup.style';
 
 import { Input, Form, Icon } from 'antd';
 const FormItem = Form.Item;
 
-const { login } = authAction;
+const { signup, login } = authAction;
 
-class SignIn extends Component {
+class SignUp extends Component {
+  static propTypes = {
+    isLoggedIn: PropTypes.bool.isRequired,
+    errorMessage: PropTypes.string
+  };
+
+  static defaultProps = {
+    errorMessage: null
+  };
+
   state = {
     redirectToReferrer: false,
     email: '',
     password: '',
+    passwordAgain: '',
     errors: {
-      email: null, password: null
+      email: null, password: null, passwordAgain: null
     },
     validateStatus: {
-      email: null, password: null
+      email: null, password: null, passwordAgain: null
     }
   };
 
@@ -33,27 +43,24 @@ class SignIn extends Component {
     this.setState({
       redirectToReferrer,
       errors: {
-        email: null, password: null
+        email: null, password: null, passwordAgain: null
       },
       validateStatus: {
         email: nextProps.errorMessage && 'error',
         password: nextProps.errorMessage && 'error',
+        passwordAgain: nextProps.errorMessage && 'error'
       }
     });
   }
 
-  handleLogin = (event, provider) => {
+  handleSignup = event => {
     event.preventDefault();
-    const { login } = this.props;
-    if (provider === 'email') {
-      for (const el of ['email', 'password']) {
-        if (this.validate(el, this.state[el]) !== null)
-          return;
-      }
-      login(provider, { email: this.state.email, password: this.state.password });
-    } else
-      login(provider, {});
-    //this.props.history.push('/dashboard');
+    const { signup } = this.props;
+    for (const el of ['email', 'password']) {
+      if (this.validate(el, this.state[el]) !== null)
+        return;
+    }
+    signup({ email: this.state.email, password: this.state.password });
   };
 
   validate = (fieldName, fieldValue) => {
@@ -67,7 +74,19 @@ class SignIn extends Component {
 
     if (errorMsg === null) switch(fieldName) {
       case 'email':
+        break;
       case 'password':
+        if (fieldValue.length < 8) {
+          errorMsg = 'Password must be 8 characters long';
+          fieldStatus = 'warning';
+        }
+        break;
+      case 'passwordAgain':
+        if (fieldValue !== this.state.password) {
+          errorMsg = 'Passwords must match';
+          fieldStatus = 'error';
+        }
+        break;
       default: break;
     }
 
@@ -87,9 +106,10 @@ class SignIn extends Component {
 
   onChange = e => {
     e.preventDefault();
+    const { name, value } = e.target;
     this.setState({
-      [e.target.name]: e.target.value
-    }, this.validate(e.target.name, e.target.value));
+      [name]: value
+    }, () => this.validate(name, value));
   }
 
   render() {
@@ -100,16 +120,16 @@ class SignIn extends Component {
       return <Redirect to={from} />;
     }
     return (
-      <SignInStyleWrapper className="isoSignInPage">
-        <div className="isoLoginContentWrapper">
-          <div className="isoLoginContent">
+      <SignupStyleWrapper className="isoSignupPage">
+        <div className="isoSignupContentWrapper">
+          <div className="isoSignupContent">
             <div className="isoLogoWrapper">
               <Link to="/dashboard">
                 <IntlMessages id="page.signInTitle" />
               </Link>
             </div>
 
-            <Form className="isoSignInForm" onSubmit={e => this.handleLogin(e, 'email')}>
+            <Form className="isoSignupForm" onSubmit={this.handleSignup}>
               <FormItem className="isoInputWrapper"
                 hasFeedback
                 validateStatus={this.state.validateStatus.email}
@@ -140,6 +160,21 @@ class SignIn extends Component {
                 />
               </FormItem>
 
+              <FormItem className="isoInputWrapper"
+                hasFeedback
+                validateStatus={this.state.validateStatus.passwordAgain}
+                help={this.state.errors.passwordAgain}
+              >
+                <Input
+                  size="large"
+                  value={this.state.passwordAgain}
+                  onChange={this.onChange}
+                  prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                  name="passwordAgain" type="password"
+                  placeholder="Repeat Password"
+                />
+              </FormItem>
+
               <div className="isoLeftRightComponent">
                 <Checkbox>
                   <IntlMessages id="page.signInRememberMe" />
@@ -149,45 +184,45 @@ class SignIn extends Component {
                 </Link>
               </div>
 
-              <FormItem className="isoSignInButton">
+              <FormItem className="isoSignupButton">
                 <Button block type="primary" htmlType="submit">
-                  <IntlMessages id="page.signInButton" />
+                  <IntlMessages id="page.signUpButton" />
                 </Button>
               </FormItem>
 
               <div className="isoInputWrapper isoOtherLogin">
-                <Button onClick={e => this.handleLogin(e, 'facebook')} type="primary btnFacebook">
+                <Button
+                  onClick={e => this.props.login('facebook')}
+                  type="primary btnFacebook"
+                >
                   <IntlMessages id="page.signInFacebook" />
                 </Button>
-                <Button onClick={e => this.handleLogin(e, 'google')} type="primary btnGooglePlus">
+                <Button
+                  onClick={e => this.props.login('google')}
+                  type="primary btnGooglePlus"
+                >
                   <IntlMessages id="page.signInGooglePlus" />
                 </Button>
               </div>
               <div className="isoCenterComponent isoHelperWrapper">
-                <Link to="">
-                  <IntlMessages id="page.signInCreateAccount" />
+                <Link to="/signin">
+                  <IntlMessages id="page.signUpAlreadyAccount" />
                 </Link>
               </div>
             </Form>
           </div>
         </div>
-      </SignInStyleWrapper>
+      </SignupStyleWrapper>
     );
   }
 }
 
-//<FormItem className="isoInputWrapper" hasFeedback>
-//  {getFieldDecorator('password', {
-//    rules: [{ required: true, message: 'Please input your password!' }],
-//  })(
-//  )}
-//</FormItem>
-
+export { SignUp };
 
 export default connect(
   state => ({
     isLoggedIn: state.Auth.user !== null ? true : false,
     errorMessage: state.Auth.error || null,
   }),
-  { login }
-)(SignIn);
+  { signup, login }
+)(SignUp);
