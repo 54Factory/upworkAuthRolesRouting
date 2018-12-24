@@ -7,70 +7,67 @@ const valid =
   firebaseConfig && firebaseConfig.apiKey && firebaseConfig.projectId;
 
 const firebaseApp = valid && firebase.initializeApp(firebaseConfig);
-const firebaseAuth = valid && firebase.auth;
+// const firebaseAuth = valid && firebase.auth;
 
 class FirebaseHelper {
   isValid = valid;
-  EMAIL = 'email';
-  FACEBOOK = 'facebook';
-  GOOGLE = 'google';
-  GITHUB = 'github';
-  TWITTER = 'twitter';
+  // EMAIL = 'email';
+  // FACEBOOK = 'facebook';
+  // GOOGLE = 'google';
+  // GITHUB = 'github';
+  // TWITTER = 'twitter';
   constructor() {
-    this.login = this.login.bind(this);
-    this.logout = this.logout.bind(this);
-    this.isAuthenticated = this.isAuthenticated.bind(this);
-    this.database = this.isValid && firebase.firestore();
-    if (this.database) {
-      const settings = { timestampsInSnapshots: true };
-      this.database.settings(settings);
-    }
+    this.handleAuthError = this.handleAuthError.bind(this);
+    // this.login = this.login.bind(this);
+    // this.logout = this.logout.bind(this);
+    // this.isAuthenticated = this.isAuthenticated.bind(this);
+    // this.getUser = this.getUser.bind(this);
+    // this.database = this.isValid && firebase.firestore();
+    // if (this.database) {
+    //   const settings = { timestampsInSnapshots: true };
+    //   this.database.settings(settings);
+    // }
     this.rsf =
       this.isValid && new ReduxSagaFirebase(firebaseApp, firebase.firestore());
     this.rsfFirestore = this.isValid && this.rsf.firestore;
   }
-  createBatch = () => {
-    return this.database.batch();
-  };
-  login(provider, info) {
-    if (!this.isValid) {
-      return;
-    }
-    switch (provider) {
-      case this.EMAIL:
-        return firebaseAuth().signInWithEmailAndPassword(
-          info.email,
-          info.password
-        );
-      case this.FACEBOOK:
-        return firebaseAuth().FacebookAuthProvider();
-      case this.GOOGLE:
-        return firebaseAuth().GoogleAuthProvider();
-      case this.GITHUB:
-        return firebaseAuth().GithubAuthProvider();
-      case this.TWITTER:
-        return firebaseAuth().TwitterAuthProvider();
+
+  /**
+   * handles google auth errors and returns a more readable error message
+   * @param {Object} error 
+   */
+  handleAuthError(error) {
+    let errorMessage;
+    switch (error.code) {
+      case 'auth/invalid-email':
+        errorMessage = 'Invalid Email';
+        break;
+      case 'auth/user-not-found':
+      case 'auth/wrong-password':
+        errorMessage = 'Wrong Email or Password';
+        break;
+      case 'auth/user-disabled':
+        errorMessage = 'User has been disabled';
+        break;
+      case 'auth/email-already-in-use':
+        errorMessage = 'A User with that email already exists';
+        break;
+      case 'auth/weak-password':
+        errorMessage = 'Your password is too weak';
+        break;
       default:
+        errorMessage = 'Authentication Error';
+        break;
     }
-  }
-  logout() {
-    return firebaseAuth().signOut();
+    return errorMessage;
   }
 
-  isAuthenticated() {
-    firebaseAuth().onAuthStateChanged(user => {
-      return user ? true : false;
-    });
-  }
-  resetPassword(email) {
-    return firebaseAuth().sendPasswordResetEmail(email);
-  }
-  createNewRef() {
-    return firebase
-      .database()
-      .ref()
-      .push().key;
-  }
+  // createNewRef() {
+  //   return firebase
+  //     .database()
+  //     .ref()
+  //     .push().key;
+  // }
 }
 
 export default new FirebaseHelper();

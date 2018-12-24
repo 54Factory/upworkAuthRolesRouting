@@ -22,6 +22,10 @@ const AntInputNumber = ComponentName => styled(ComponentName)`
       border-color: ${palette('primary', 0)};
     }
 
+    &.ant-input-number-error {
+      border-color: ${palette('error', 0)};
+    }
+
     .ant-input-number-handler-wrap {
       left: ${props => (props['data-rtl'] === 'rtl' ? '0' : 'inherit')};
       right: ${props => (props['data-rtl'] === 'rtl' ? 'inherit' : '0')};

@@ -14,6 +14,20 @@ export function getToken() {
   }
 }
 
+export function clearCredential() {
+  localStorage.removeItem('credential');
+}
+
+export function getCredential() {
+  try {
+    const credential = JSON.parse(localStorage.getItem('credential'));
+    return credential;
+  } catch (err) {
+    clearCredential();
+    return {};
+  }
+}
+
 export function timeDifference(givenTime) {
   givenTime = new Date(givenTime);
   const milliseconds = new Date().getTime() - givenTime.getTime();
