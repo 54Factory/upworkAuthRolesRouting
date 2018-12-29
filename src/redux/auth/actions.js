@@ -8,6 +8,14 @@ const actions = {
   SIGNUP_REQUEST: 'SIGNUP_REQUEST',
   SIGNUP_ERROR: 'SIGNUP_ERROR',
   //
+  RESET_PASSWORD_REQUEST: 'RESET_PASSWORD_REQUEST',
+  RESET_PASSWORD_SUCCESS: 'RESET_PASSWORD_SUCCESS',
+  RESET_PASSWORD_ERROR: 'RESET_PASSWORD_ERROR',
+  //
+  resetPassword: (email) => ({
+    type: actions.RESET_PASSWORD_REQUEST,
+    email
+  }),
   signup: (info) => ({
     type: actions.SIGNUP_REQUEST,
     info
@@ -21,4 +29,5 @@ const actions = {
     type: actions.LOGOUT
   })
 };
+
 export default actions;

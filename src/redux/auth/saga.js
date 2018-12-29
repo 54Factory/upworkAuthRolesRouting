@@ -7,6 +7,27 @@ import notification from '../../components/notification';
 
 import firebase from 'firebase';
 
+export function* resetPasswordRequest() {
+  yield takeEvery(actions.RESET_PASSWORD_REQUEST, function*(action) {
+    try {
+      const actionCodeSettings = {};
+      yield call(
+        firebaseHelper.rsf.auth.sendPasswordResetEmail,
+        action.email,
+        actionCodeSettings
+      );
+      yield put({
+        type: actions.RESET_PASSWORD_SUCESSS
+      });
+    } catch (err) {
+      yield put({
+        type: actions.RESET_PASSWORD_ERROR,
+        error: firebaseHelper.handleAuthError(err)
+      });
+    }
+  });
+}
+
 export function* signupRequest() {
   yield takeEvery(actions.SIGNUP_REQUEST, function*(action) {
     try {
@@ -21,7 +42,20 @@ export function* signupRequest() {
         error: firebaseHelper.handleAuthError(err)
       });
     }
-  })
+  });
+}
+
+export function* resetPasswordError() {
+  yield takeEvery(actions.RESET_PASSWORD_ERROR, function*(payload) {
+    yield call(notification, 'error', payload.error);
+  });
+}
+
+export function* resetPasswordSuccess() {
+  yield takeEvery(actions.RESET_PASSWORD_SUCCESS, function*(payload) {
+    yield call(notification, 'success', 'Password reset');
+  });
+  yield put(push('/signin'));
 }
 
 export function* signupError() {
@@ -71,6 +105,7 @@ export function* loginError() {
   });
 }
 
+
 export function* logout() {
   yield takeEvery(actions.LOGOUT, function*() {
     try {
@@ -102,6 +137,8 @@ export function* syncUser() {
 
 export default function* rootSaga() {
   yield all([
+    fork(resetPasswordRequest),
+    fork(resetPasswordError),
     fork(signupRequest),
     fork(signupError),
     fork(loginRequest),

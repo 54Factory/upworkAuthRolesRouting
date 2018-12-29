@@ -22,7 +22,7 @@ class FirebaseHelper {
     // this.logout = this.logout.bind(this);
     // this.isAuthenticated = this.isAuthenticated.bind(this);
     // this.getUser = this.getUser.bind(this);
-    // this.database = this.isValid && firebase.firestore();
+    this.database = this.isValid && firebase.firestore();
     // if (this.database) {
     //   const settings = { timestampsInSnapshots: true };
     //   this.database.settings(settings);
@@ -61,13 +61,6 @@ class FirebaseHelper {
     }
     return errorMessage;
   }
-
-  // createNewRef() {
-  //   return firebase
-  //     .database()
-  //     .ref()
-  //     .push().key;
-  // }
 }
 
 export default new FirebaseHelper();

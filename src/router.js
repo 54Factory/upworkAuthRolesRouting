@@ -43,6 +43,10 @@ const PublicRoutes = ({ history, isLoggedIn }) => {
           path={'/signup'}
           component={asyncComponent(() => import('./containers/Page/signup'))}
         />
+        <Route
+          path={'/password_reset'}
+          component={asyncComponent(() => import('./containers/Page/passwordReset'))}
+        />
         <RestrictedRoute
           path="/dashboard"
           component={App}
