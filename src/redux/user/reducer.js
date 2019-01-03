@@ -18,6 +18,11 @@ export default function userReducer(state = initState, action) {
       return {
         ...state,
         user: action.user,
+        error: null
+      };
+    case actions.SYNC_ROLES:
+      return {
+        ...state,
         roles: action.roles,
         error: null
       };
