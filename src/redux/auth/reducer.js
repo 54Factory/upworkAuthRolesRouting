@@ -1,7 +1,7 @@
 import actions from './actions';
 
 const initState = {
-  user: null,
+  authUser: null,
   error: null,
   resetError: null
 };
@@ -22,19 +22,19 @@ export default function authReducer(state = initState, action) {
       return {
         ...state,
         error: action.error,
-        user: null
+        authUser: null
       };
     case actions.LOGIN_SUCCESS:
       return {
         ...state,
-        user: action.user,
+        authUser: action.authUser,
         error: null
       };
     case actions.LOGIN_ERROR:
       return {
         ...state,
         error: action.error,
-        user: null
+        authUser: null
       }
     case actions.LOGOUT:
       return initState;

@@ -30,6 +30,7 @@ class FirebaseHelper {
     this.rsf =
       this.isValid && new ReduxSagaFirebase(firebaseApp, firebase.firestore());
     this.rsfFirestore = this.isValid && this.rsf.firestore;
+    firebase.firestore().settings({ timestampsInSnapshots: true });
   }
 
   /**
