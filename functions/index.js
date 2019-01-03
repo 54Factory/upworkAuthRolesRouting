@@ -10,33 +10,44 @@ const db = admin.firestore();
  */
 const ROLES = {
   ADMIN: 'ADMIN',
-  USER: 'USER'
+  DEFAULT: 'DEFAULT'
 };
 
 /**
  * Creates a document with ID -> uid in the `Users` collection.
  *
- * create user with Default ROLE,
- *
  * @param {Object} userRecord Contains the auth, uid and displayName info.
  * @param {Object} context Details about the event.
  */
-const createProfile = (userRecord, context) => {
-  db
-    .collection('Roles')
-    .doc(userRecord.uid)
-    .set({
-      roles: [ROLES.USER]
-    })
-    .catch(console.error);
+function createProfile(userRecord, context) {
   return db
     .collection('Users')
     .doc(userRecord.uid)
     .set({
+      displayName: userRecord.displayName,
+      photoURL: userRecord.photoURL,
       email: userRecord.email
     })
     .catch(console.error);
-};
+
+}
+
+/**
+ * Creates a document with ID -> uid in the 'Roles' collection.
+ *
+ * @param {Object} userRecord Contains the auth, uid and displayName info.
+ * @param {Object} context Details about the event.
+ */
+function createRoles(userRecord, context) {
+  return db
+    .collection('Roles')
+    .doc(userRecord.uid)
+    .set({
+      roles: [ROLES.DEFAULT]
+    })
+    .catch(console.error);
+
+}
 
 /**
  * Delete user document with ID -> uid in the 'Users collection'.
@@ -44,12 +55,7 @@ const createProfile = (userRecord, context) => {
  * @param {Object} userRecord Contains the auth, uid and displayName info.
  * @param {Object} context Details about the event.
  */
-const deleteProfile = (userRecord, context) => {
-  db
-    .collection('Roles')
-    .doc(userRecord.uid)
-    .delete()
-    .catch(console.error);
+function deleteProfile(userRecord, context) {
   return db
     .collection('Users')
     .doc(userRecord.uid)
@@ -57,7 +63,27 @@ const deleteProfile = (userRecord, context) => {
     .catch(console.error);
 };
 
+/**
+ * deletes a document with ID -> uid in the 'Roles' collection.
+ *
+ * @param {Object} userRecord Contains the auth, uid and displayName info.
+ * @param {Object} context Details about the event.
+ */
+function deleteRoles(userRecord, context) {
+  return db
+    .collection('Roles')
+    .doc(userRecord.uid)
+    .delete()
+    .catch(console.error);
+}
+
 module.exports = {
-  authOnCreate: functions.auth.user().onCreate(createProfile),
-  authOnDelete: functions.auth.user().onDelete(deleteProfile)
+  authOnCreate: functions.auth.user().onCreate((userRecord, context) => {
+    createRoles(userRecord, context);
+    return createProfile(userRecord, context);
+  }),
+  authOnDelete: functions.auth.user().onDelete((userRecord, context) => {
+    deleteRoles(userRecord, context);
+    return deleteProfile(userRecord, context);
+  })
 };

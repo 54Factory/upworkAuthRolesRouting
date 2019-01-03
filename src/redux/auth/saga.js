@@ -86,17 +86,17 @@ export function* loginRequest() {
       let method;
       switch(action.provider) {
         case 'email':
-          provider = new firebase.auth.EmailAuthProvider();
+          provider = new firebaseHelper.rsfAuth.EmailAuthProvider();
           method = firebaseHelper.rsf.auth.signInWithEmailAndPassword;
           yield call(method, action.info.email, action.info.password);
           break;
         case 'google':
-          provider = new firebase.auth.GoogleAuthProvider();
+          provider = new firebaseHelper.rsfAuth.GoogleAuthProvider();
           method = firebaseHelper.rsf.auth.signInWithPopup;
           yield call(method, provider);
           break;
         case 'facebook':
-          provider = new firebase.auth.FacebookAuthProvider();
+          provider = new firebaseHelper.rsfAuth.FacebookAuthProvider();
           method = firebaseHelper.rsf.auth.signInWithPopup();
           yield call(method, provider);
           break;
