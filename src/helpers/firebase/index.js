@@ -1,5 +1,6 @@
 import firebase from 'firebase';
 import ReduxSagaFirebase from 'redux-saga-firebase';
+import { buffers, eventChannel } from 'redux-saga';
 import 'firebase/firestore';
 import { firebaseConfig } from '../../settings';
 
@@ -7,29 +8,35 @@ const valid =
   firebaseConfig && firebaseConfig.apiKey && firebaseConfig.projectId;
 
 const firebaseApp = valid && firebase.initializeApp(firebaseConfig);
-// const firebaseAuth = valid && firebase.auth;
+const firebaseAuth = valid && firebase.auth;
 
 class FirebaseHelper {
   isValid = valid;
-  // EMAIL = 'email';
-  // FACEBOOK = 'facebook';
-  // GOOGLE = 'google';
-  // GITHUB = 'github';
-  // TWITTER = 'twitter';
   constructor() {
     this.handleAuthError = this.handleAuthError.bind(this);
-    // this.login = this.login.bind(this);
-    // this.logout = this.logout.bind(this);
-    // this.isAuthenticated = this.isAuthenticated.bind(this);
-    // this.getUser = this.getUser.bind(this);
-    // this.database = this.isValid && firebase.firestore();
-    // if (this.database) {
-    //   const settings = { timestampsInSnapshots: true };
-    //   this.database.settings(settings);
-    // }
+    this.channel = this.channel.bind(this);
+    this.database = this.isValid && firebase.firestore();
+    this.rsfAuth = firebaseAuth;
     this.rsf =
       this.isValid && new ReduxSagaFirebase(firebaseApp, firebase.firestore());
     this.rsfFirestore = this.isValid && this.rsf.firestore;
+    firebase.firestore().settings({ timestampsInSnapshots: true });
+  }
+
+  channel(
+    pathOrRef,
+    type = 'collection',
+    buffer = buffers.none()
+  ) {
+    const ref = type === 'collection'
+      ? this.database.collection(pathOrRef)
+      : this.database.doc(pathOrRef);
+    const channel = eventChannel(emit => ref.onSnapshot(val => {
+      emit({ val, err: null });
+    }, err => {
+      emit({ val: null, err });
+    }), buffer);
+    return channel;
   }
 
   /**
@@ -61,13 +68,6 @@ class FirebaseHelper {
     }
     return errorMessage;
   }
-
-  // createNewRef() {
-  //   return firebase
-  //     .database()
-  //     .ref()
-  //     .push().key;
-  // }
 }
 
 export default new FirebaseHelper();

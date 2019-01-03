@@ -129,7 +129,6 @@ const SignupStyleWrapper = styled.div`
       }
 
       .isoHelperWrapper {
-        margin-top: 35px;
         flex-direction: column;
       }
 

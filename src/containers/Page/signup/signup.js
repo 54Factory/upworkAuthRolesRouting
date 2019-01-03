@@ -179,7 +179,7 @@ class SignUp extends Component {
                 <Checkbox>
                   <IntlMessages id="page.signInRememberMe" />
                 </Checkbox>
-                <Link to="" className="isoForgotPass">
+                <Link to="password_reset" className="isoForgotPass">
                   <IntlMessages id="page.signInForgotPass" />
                 </Link>
               </div>
