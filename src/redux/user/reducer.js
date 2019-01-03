@@ -21,6 +21,8 @@ export default function userReducer(state = initState, action) {
         roles: action.roles,
         error: null
       };
+    case actions.CLEAR_USER:
+      return initState;
     default:
       return state;
   }
