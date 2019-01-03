@@ -12,13 +12,13 @@ import authActions from '../auth/actions';
 export function* syncUser() {
   yield takeLatest(authActions.LOGIN_SUCCESS, function*() {
     const uid = yield select(state => state.Auth.authUser.uid);
-    const channel = firebaseHelper.rsfFirestore.channel(`Users/${uid}`, 'document');
+    const channel = firebaseHelper.channel(`Users/${uid}`, 'document');
     while (true) {
-      const user = yield take(channel);
-      if (user) {
+      const { val, err } = yield take(channel);
+      if (val) {
         yield put({
           type: actions.SYNC_USER,
-          user: user.data()
+          user: val.data()
         });
       }
     }
@@ -28,13 +28,13 @@ export function* syncUser() {
 export function* syncRoles() {
   yield takeLatest(authActions.LOGIN_SUCCESS, function*() {
     const uid = yield select(state => state.Auth.authUser.uid);
-    const channel = firebaseHelper.rsfFirestore.channel(`Roles/${uid}`, 'document');
+    const channel = firebaseHelper.channel(`Roles/${uid}`, 'document');
     while (true) {
-      const roles = yield take(channel);
-      if (roles) {
+      const { val, err } = yield take(channel);
+      if (val) {
         yield put({
           type: actions.SYNC_ROLES,
-          roles: roles.data().roles
+          roles: val.data().roles
         });
       }
     }

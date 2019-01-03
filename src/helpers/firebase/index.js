@@ -1,5 +1,6 @@
 import firebase from 'firebase';
 import ReduxSagaFirebase from 'redux-saga-firebase';
+import { buffers, eventChannel } from 'redux-saga';
 import 'firebase/firestore';
 import { firebaseConfig } from '../../settings';
 
@@ -13,12 +14,29 @@ class FirebaseHelper {
   isValid = valid;
   constructor() {
     this.handleAuthError = this.handleAuthError.bind(this);
+    this.channel = this.channel.bind(this);
     this.database = this.isValid && firebase.firestore();
     this.rsfAuth = firebaseAuth;
     this.rsf =
       this.isValid && new ReduxSagaFirebase(firebaseApp, firebase.firestore());
     this.rsfFirestore = this.isValid && this.rsf.firestore;
     firebase.firestore().settings({ timestampsInSnapshots: true });
+  }
+
+  channel(
+    pathOrRef,
+    type = 'collection',
+    buffer = buffers.none()
+  ) {
+    const ref = type === 'collection'
+      ? this.database.collection(pathOrRef)
+      : this.database.doc(pathOrRef);
+    const channel = eventChannel(emit => ref.onSnapshot(val => {
+      emit({ val, err: null });
+    }, err => {
+      emit({ val: null, err });
+    }), buffer);
+    return channel;
   }
 
   /**
