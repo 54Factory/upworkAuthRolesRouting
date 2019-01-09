@@ -17,7 +17,8 @@ db.settings({
  */
 const ROLES = {
   ADMIN: 'ADMIN',
-  DEFAULT: 'DEFAULT'
+  DRIVER: 'DRIVER',
+  CUSTOMER: 'CUSTOMER'
 };
 
 /**
@@ -27,6 +28,7 @@ const ROLES = {
  * @param {Object} context Details about the event.
  */
 function createProfile(userRecord, context) {
+  console.log(context);
   return db
     .collection('Users')
     .doc(userRecord.uid)

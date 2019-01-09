@@ -15,7 +15,7 @@ export function* syncUser() {
     const channel = firebaseHelper.channel(`Users/${uid}`, 'document');
     while (true) {
       const { val, err } = yield take(channel);
-      if (val) {
+      if (val && val.data()) {
         yield put({
           type: actions.SYNC_USER,
           user: val.data()
@@ -31,7 +31,7 @@ export function* syncRoles() {
     const channel = firebaseHelper.channel(`Roles/${uid}`, 'document');
     while (true) {
       const { val, err } = yield take(channel);
-      if (val) {
+      if (val && val.data()) {
         yield put({
           type: actions.SYNC_ROLES,
           roles: val.data().roles

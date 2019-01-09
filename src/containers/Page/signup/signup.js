@@ -20,7 +20,8 @@ class SignUp extends Component {
   };
 
   static defaultProps = {
-    errorMessage: null
+    errorMessage: null,
+    isLoggedIn: false
   };
 
   state = {
@@ -35,6 +36,13 @@ class SignUp extends Component {
       email: null, password: null, passwordAgain: null
     }
   };
+
+  constructor() {
+    super();
+    this.handleSignup = this.handleSignup.bind(this);
+    this.onChange = this.onChange.bind(this);
+    this.validate = this.validate.bind(this);
+  }
 
   componentWillReceiveProps(nextProps) {
     const redirectToReferrer =
@@ -53,7 +61,7 @@ class SignUp extends Component {
     });
   }
 
-  handleSignup = event => {
+  handleSignup(event) {
     event.preventDefault();
     const { signup } = this.props;
     for (const el of ['email', 'password']) {
@@ -63,7 +71,7 @@ class SignUp extends Component {
     signup({ email: this.state.email, password: this.state.password });
   };
 
-  validate = (fieldName, fieldValue) => {
+  validate(fieldName, fieldValue) {
     let errorMsg = null;
     let fieldStatus = 'success';
 
@@ -104,7 +112,7 @@ class SignUp extends Component {
     return errorMsg;
   }
 
-  onChange = e => {
+  onChange(e) {
     e.preventDefault();
     const { name, value } = e.target;
     this.setState({
@@ -221,7 +229,7 @@ export { SignUp };
 
 export default connect(
   state => ({
-    isLoggedIn: state.Auth.user !== null ? true : false,
+    isLoggedIn: state.Auth.authUser !== null ? true : false,
     errorMessage: state.Auth.error || null,
   }),
   { signup, login }

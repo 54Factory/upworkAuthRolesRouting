@@ -7,22 +7,37 @@ import { firebaseConfig } from '../../settings';
 const valid =
   firebaseConfig && firebaseConfig.apiKey && firebaseConfig.projectId;
 
-const firebaseApp = valid && firebase.initializeApp(firebaseConfig);
+const firebaseApp =
+  valid && process.env.NODE_ENV === 'test'
+  ? firebase.initializeTestApp(firebaseConfig)
+  : firebase.initializeApp(firebaseConfig);
+
 const firebaseAuth = valid && firebase.auth;
 
 class FirebaseHelper {
   isValid = valid;
   constructor() {
+    // bind methods
     this.handleAuthError = this.handleAuthError.bind(this);
     this.channel = this.channel.bind(this);
+
     this.database = this.isValid && firebase.firestore();
     this.rsfAuth = firebaseAuth;
     this.rsf =
       this.isValid && new ReduxSagaFirebase(firebaseApp, firebase.firestore());
     this.rsfFirestore = this.isValid && this.rsf.firestore;
+
+    // new timestamp settings for firestore
     firebase.firestore().settings({ timestampsInSnapshots: true });
   }
 
+  /**
+   * Creates channel for firestore collection or document
+   * @param pathorRef {String} - path to document or collection
+   * @param type {String} - collection or document
+   * @param buffer {buffer}
+   * returns channel
+   */
   channel(
     pathOrRef,
     type = 'collection',

@@ -4,13 +4,33 @@ service cloud.firestore {
     function getRoles(userId) {
       return get(/databases/$(database)/documents/Roles/$(userId)).roles
     }
+
     match /Roles/{userId} {
+      // Roles document
+      // - roles {Array} list of roles
       allow read: if request.auth != null && request.auth.uid == userId
       allow write: if ('ADMIN' in getRoles(userId))
     }
+
     match /Users/{userId} {
+      // Users document
+      // email {String}
+      // displayName {String}
+      // firstName {String}
+      // lastName {String}
+      // photoURL {String} - Link to firebasestorage
+      // photos {Photos} - Link to Photos document
       allow read: if request.auth != null && request.auth.uid == userId
       allow write: if ('ADMIN' in getRoles(userId))
+    }
+
+    match /Photos/{photoId} {
+      // Photos document
+      // Name {String}
+      // Owner {uid} - userId
+      // url {String} - link to firebase storage
+      allow read: if request.auth && request.auth.uid == get(/databases/$(database)/documents/Photos/$(photoId)).Owner
+      allow write: if request.auth && request.auth.uid == get(/databases/$(database)/documents/Photos/$(photoId)).Owner
     }
   }
 }

@@ -8,16 +8,6 @@ const initState = {
 
 export default function authReducer(state = initState, action) {
   switch (action.type) {
-    case actions.RESET_PASSWORD_ERROR:
-      return {
-        ...state,
-        resetError: action.error
-      };
-    case action.RESET_PASSWORD_SUCCESS:
-      return {
-        ...state,
-        resetError: null
-      };
     case actions.SIGNUP_ERROR:
       return {
         ...state,
@@ -38,6 +28,16 @@ export default function authReducer(state = initState, action) {
       }
     case actions.LOGOUT:
       return initState;
+    case actions.RESET_PASSWORD_ERROR:
+      return {
+        ...state,
+        resetError: action.error
+      };
+    case action.RESET_PASSWORD_SUCCESS:
+      return {
+        ...state,
+        resetError: null
+      };
     default:
       return state;
   }
