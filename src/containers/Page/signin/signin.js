@@ -182,11 +182,6 @@ class SignIn extends Component {
                   <IntlMessages id="page.signInGooglePlus" />
                 </Button>
               </div>
-              <div className="isoCenterComponent isoHelperWrapper">
-                <Link to="/signup">
-                  <IntlMessages id="page.signInCreateAccount" />
-                </Link>
-              </div>
             </Form>
           </div>
         </div>

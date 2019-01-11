@@ -6,11 +6,11 @@ import { connect } from 'react-redux';
 import App from './containers/App/App';
 import asyncComponent from './helpers/AsyncFunc';
 
-const RestrictedRoute = ({ component: Component, isLoggedIn, ...rest }) => (
+const RestrictedRoute = ({ component: Component, allowed, ...rest }) => (
   <Route
     {...rest}
     render={props =>
-      isLoggedIn ? (
+      allowed ? (
         <Component {...props} />
       ) : (
         <Redirect
@@ -24,7 +24,7 @@ const RestrictedRoute = ({ component: Component, isLoggedIn, ...rest }) => (
   />
 );
 
-const PublicRoutes = ({ history, isLoggedIn }) => {
+const PublicRoutes = ({ history, isLoggedIn, role }) => {
   return (
     <ConnectedRouter history={history}>
       <div>
@@ -39,18 +39,14 @@ const PublicRoutes = ({ history, isLoggedIn }) => {
           component={asyncComponent(() => import('./containers/Page/signin'))}
         />
         <Route
-          exact
-          path={'/signup'}
-          component={asyncComponent(() => import('./containers/Page/signup'))}
-        />
-        <Route
           path={'/password_reset'}
           component={asyncComponent(() => import('./containers/Page/passwordReset'))}
         />
+
         <RestrictedRoute
-          path="/dashboard"
+          path="/admin"
           component={App}
-          isLoggedIn={isLoggedIn}
+          allowed={isLoggedIn && role === 'ADMIN'}
         />
       </div>
     </ConnectedRouter>
@@ -59,5 +55,5 @@ const PublicRoutes = ({ history, isLoggedIn }) => {
 
 export default connect(state => ({
   isLoggedIn: state.Auth.authUser !== null,
-  roles: state.User.roles
+  role: state.Auth.role
 }))(PublicRoutes);

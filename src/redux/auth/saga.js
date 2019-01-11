@@ -9,33 +9,33 @@ import notification from '../../components/notification';
 /**
  * Creates new user on SIGNUP_REQUEST
  */
-export function* watchSignupRequest() {
-  yield takeEvery(actions.SIGNUP_REQUEST, signupRequest);
-}
-export function* signupRequest(action) {
-  try {
-    const { email, password } = action.info;
-    yield call(
-      firebaseHelper.rsf.auth.createUserWithEmailAndPassword,
-      email,
-      password);
-  } catch (err) {
-    yield put({
-      type: actions.SIGNUP_ERROR,
-      error: firebaseHelper.handleAuthError(err)
-    });
-  }
-}
-
-/**
- * Creates notification on signup error
- */
-export function* watchSignupError() {
-  yield takeEvery(actions.SIGNUP_ERROR, signupError);
-}
-export function* signupError(action) {
-  yield call(notification, 'error', 'Error', action.error);
-}
+//export function* watchSignupRequest() {
+//  yield takeEvery(actions.SIGNUP_REQUEST, signupRequest);
+//}
+//export function* signupRequest(action) {
+//  try {
+//    const { email, password } = action.info;
+//    yield call(
+//      firebaseHelper.rsf.auth.createUserWithEmailAndPassword,
+//      email,
+//      password);
+//  } catch (err) {
+//    yield put({
+//      type: actions.SIGNUP_ERROR,
+//      error: firebaseHelper.handleAuthError(err)
+//    });
+//  }
+//}
+//
+///**
+// * Creates notification on signup error
+// */
+//export function* watchSignupError() {
+//  yield takeEvery(actions.SIGNUP_ERROR, signupError);
+//}
+//export function* signupError(action) {
+//  yield call(notification, 'error', 'Error', action.error);
+//}
 
 /**
  * Login to firebase on LOGIN_REQUEST
@@ -83,7 +83,13 @@ export function* watchLoginSuccess() {
 }
 export function* loginSuccess(action) {
   yield call(notification, 'success', 'Success', `Logged in as ${action.authUser.email}.`);
-  yield put(push('/dashboard'));
+  switch (action.role) {
+    case 'ADMIN': {
+      yield put(push('/admin'));
+      break;
+    }
+    default: break;
+  }
 }
 
 /**
@@ -113,6 +119,18 @@ export function* logout() {
 }
 
 /**
+ * Helper function to get role from user
+ * @param user {object} - firebase user object
+ * @returns role one of "ADMIN" "CUSTOMER" "DRIVER"
+ */
+const getRole = user => {
+  return user.getIdToken(true).then(async () => {
+    const token = await user.getIdTokenResult();
+    return token.claims.role;
+  });
+};
+
+/**
  * Update user info when user changes
  */
 export function* syncAuthUser() {
@@ -121,9 +139,12 @@ export function* syncAuthUser() {
   while(true) {
     const { error, user } = yield take(channel);
     if (user) {
+      const role = yield call(getRole, user);
+      // update redux state
       yield put({
         type: actions.LOGIN_SUCCESS,
-        authUser: user
+        authUser: user,
+        role
       });
     } else if (error) {
       yield put({
@@ -184,8 +205,8 @@ export function* resetPasswordSuccess(action) {
 
 export default function* rootSaga() {
   yield all([
-    fork(watchSignupRequest),
-    fork(watchSignupError),
+    //    fork(watchSignupRequest),
+    //    fork(watchSignupError),
     fork(watchLoginRequest),
     fork(watchLoginSuccess),
     fork(watchLoginError),
