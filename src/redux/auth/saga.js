@@ -7,145 +7,128 @@ import notification from '../../components/notification';
 
 
 /**
- * Sends password reset on RESET_PASSWORD_REQUEST
- * @return {Action} RESET_PASSWORD_SUCCESS or RESET_PASSWORD_ERROR
- */
-export function* resetPasswordRequest() {
-  yield takeEvery(actions.RESET_PASSWORD_REQUEST, function*(action) {
-    try {
-      const actionCodeSettings = {};
-      yield call(
-        firebaseHelper.rsf.auth.sendPasswordResetEmail,
-        action.email,
-        actionCodeSettings
-      );
-      yield put({
-        type: actions.RESET_PASSWORD_SUCCESS
-      });
-    } catch (err) {
-      yield put({
-        type: actions.RESET_PASSWORD_ERROR,
-        error: firebaseHelper.handleAuthError(err)
-      });
-    }
-  });
-}
-
-/**
- * Notifies user on password reset error
- */
-export function* resetPasswordError() {
-  yield takeEvery(actions.RESET_PASSWORD_ERROR, function*(payload) {
-    yield call(notification, 'error', payload.error);
-  });
-}
-
-/**
- * Notify user on password reset success
- */
-export function* resetPasswordSuccess() {
-  yield takeEvery(actions.RESET_PASSWORD_SUCCESS, function*(payload) {
-    yield call(notification, 'success', 'Password reset');
-  });
-  yield put(push('/signin'));
-}
-
-/**
  * Creates new user on SIGNUP_REQUEST
  */
-export function* signupRequest() {
-  yield takeEvery(actions.SIGNUP_REQUEST, function*(action) {
-    try {
-      const { email, password } = action.info;
-      yield call(
-        firebaseHelper.rsf.auth.createUserWithEmailAndPassword,
-        email,
-        password);
-    } catch (err) {
-      yield put({
-        type: actions.SIGNUP_ERROR,
-        error: firebaseHelper.handleAuthError(err)
-      });
-    }
-  });
-}
-
-export function* signupError() {
-  yield takeEvery(actions.SIGNUP_ERROR, function*(payload) {
-    yield call(notification, 'error', payload.error);
-  });
-}
+//export function* watchSignupRequest() {
+//  yield takeEvery(actions.SIGNUP_REQUEST, signupRequest);
+//}
+//export function* signupRequest(action) {
+//  try {
+//    const { email, password } = action.info;
+//    yield call(
+//      firebaseHelper.rsf.auth.createUserWithEmailAndPassword,
+//      email,
+//      password);
+//  } catch (err) {
+//    yield put({
+//      type: actions.SIGNUP_ERROR,
+//      error: firebaseHelper.handleAuthError(err)
+//    });
+//  }
+//}
+//
+///**
+// * Creates notification on signup error
+// */
+//export function* watchSignupError() {
+//  yield takeEvery(actions.SIGNUP_ERROR, signupError);
+//}
+//export function* signupError(action) {
+//  yield call(notification, 'error', 'Error', action.error);
+//}
 
 /**
  * Login to firebase on LOGIN_REQUEST
  */
-export function* loginRequest() {
-  yield takeEvery(actions.LOGIN_REQUEST, function*(action) {
-    try {
-      let provider;
-      let method;
-      switch(action.provider) {
-        case 'email':
-          provider = new firebaseHelper.rsfAuth.EmailAuthProvider();
-          method = firebaseHelper.rsf.auth.signInWithEmailAndPassword;
-          yield call(method, action.info.email, action.info.password);
-          break;
-        case 'google':
-          provider = new firebaseHelper.rsfAuth.GoogleAuthProvider();
-          method = firebaseHelper.rsf.auth.signInWithPopup;
-          yield call(method, provider);
-          break;
-        case 'facebook':
-          provider = new firebaseHelper.rsfAuth.FacebookAuthProvider();
-          method = firebaseHelper.rsf.auth.signInWithPopup();
-          yield call(method, provider);
-          break;
-        default: break;
-      }
-      // successful login will trigger the syncUser, which will update the state
-    } catch (err) {
-      yield put({
-        type: actions.LOGIN_ERROR,
-        error: firebaseHelper.handleAuthError(err)
-      });
+export function* watchLoginRequest() {
+  yield takeEvery(actions.LOGIN_REQUEST, loginRequest);
+}
+export function* loginRequest(action) {
+  try {
+    let provider;
+    let method;
+    switch(action.provider) {
+      case 'email':
+        provider = new firebaseHelper.rsfAuth.EmailAuthProvider();
+        method = firebaseHelper.rsf.auth.signInWithEmailAndPassword;
+        yield call(method, action.info.email, action.info.password);
+        break;
+      case 'google':
+        provider = new firebaseHelper.rsfAuth.GoogleAuthProvider();
+        method = firebaseHelper.rsf.auth.signInWithPopup;
+        yield call(method, provider);
+        break;
+      case 'facebook':
+        provider = new firebaseHelper.rsfAuth.FacebookAuthProvider();
+        method = firebaseHelper.rsf.auth.signInWithPopup();
+        yield call(method, provider);
+        break;
+      default: break;
     }
-  });
+    // successful login will trigger the syncUser, which will update the state
+  } catch (err) {
+    yield put({
+      type: actions.LOGIN_ERROR,
+      error: firebaseHelper.handleAuthError(err)
+    });
+  }
 }
 
 /**
  * Notify user on LOGIN_SUCCESS
  * push user to dashboard after login
  */
-export function* loginSuccess() {
-  yield takeEvery(actions.LOGIN_SUCCESS, function*(payload) {
-    yield call(notification, 'success', `Logged in as ${payload.authUser.email}`);
-    yield put(push('/dashboard'));
-  });
+export function* watchLoginSuccess() {
+  yield takeEvery(actions.LOGIN_SUCCESS, loginSuccess);
+}
+export function* loginSuccess(action) {
+  yield call(notification, 'success', 'Success', `Logged in as ${action.authUser.email}.`);
+  switch (action.role) {
+    case 'ADMIN': {
+      yield put(push('/admin'));
+      break;
+    }
+    default: break;
+  }
 }
 
 /**
  * Notify user on login error
  */
-export function* loginError() {
-  yield takeEvery(actions.LOGIN_ERROR, function*(payload) {
-    yield call(notification, 'error', payload.error);
-  });
+export function* watchLoginError() {
+  yield takeEvery(actions.LOGIN_ERROR, loginError);
+}
+export function* loginError(action) {
+  yield call(notification, 'error', 'Error', action.error);
 }
 
 /**
  * Logout of firebase
  */
-export function* logout() {
-  yield takeEvery(actions.LOGOUT, function*() {
-    try {
-      yield call(firebaseHelper.rsf.auth.signOut);
-      yield put(push('/'));
-      yield call(notification, 'success', 'Successfully Logged out');
-    } catch (e) {
-      // logout error
-    }
-  });
+export function* watchLogout() {
+  yield takeEvery(actions.LOGOUT, logout);
 }
+export function* logout() {
+  try {
+    yield call(firebaseHelper.rsf.auth.signOut);
+    yield put(push('/'));
+    yield call(notification, 'success', 'Success', 'Successfully Logged out.');
+  } catch (e) {
+    // logout error
+  }
+}
+
+/**
+ * Helper function to get role from user
+ * @param user {object} - firebase user object
+ * @returns role one of "ADMIN" "CUSTOMER" "DRIVER"
+ */
+const getRole = user => {
+  return user.getIdToken(true).then(async () => {
+    const token = await user.getIdTokenResult();
+    return token.claims.role;
+  });
+};
 
 /**
  * Update user info when user changes
@@ -156,9 +139,12 @@ export function* syncAuthUser() {
   while(true) {
     const { error, user } = yield take(channel);
     if (user) {
+      const role = yield call(getRole, user);
+      // update redux state
       yield put({
         type: actions.LOGIN_SUCCESS,
-        authUser: user
+        authUser: user,
+        role
       });
     } else if (error) {
       yield put({
@@ -169,17 +155,65 @@ export function* syncAuthUser() {
   }
 }
 
+/**
+ * Sends password reset on RESET_PASSWORD_REQUEST
+ * @return {Action} RESET_PASSWORD_SUCCESS or RESET_PASSWORD_ERROR
+ */
+export function* watchResetPasswordRequest()  {
+  yield takeEvery(actions.RESET_PASSWORD_REQUEST, resetPasswordRequest);
+}
+export function* resetPasswordRequest(action) {
+  try {
+    const actionCodeSettings = {};
+    yield call(
+      firebaseHelper.rsf.auth.sendPasswordResetEmail,
+      action.email,
+      actionCodeSettings
+    );
+    yield put({
+      type: actions.RESET_PASSWORD_SUCCESS,
+      email: action.email
+    });
+  } catch (err) {
+    yield put({
+      type: actions.RESET_PASSWORD_ERROR,
+      error: firebaseHelper.handleAuthError(err)
+    });
+  }
+}
+
+/**
+ * Notifies user on password reset error
+ */
+export function* watchResetPasswordError() {
+  yield takeEvery(actions.RESET_PASSWORD_ERROR, resetPasswordError);
+}
+export function* resetPasswordError(action) {
+  yield call(notification, 'error', 'Error', action.error);
+}
+
+/**
+ * Notify user on password reset success
+ */
+export function* watchResetPasswordSuccess() {
+  yield takeEvery(actions.RESET_PASSWORD_SUCCESS, resetPasswordSuccess);
+}
+export function* resetPasswordSuccess(action) {
+  yield call(notification, 'success', 'Success', `Password reset email sent to ${action.email}.`);
+  yield put(push('/signin'));
+}
+
 export default function* rootSaga() {
   yield all([
-    fork(resetPasswordRequest),
-    fork(resetPasswordError),
-    fork(resetPasswordSuccess),
-    fork(signupRequest),
-    fork(signupError),
-    fork(loginRequest),
-    fork(loginSuccess),
-    fork(loginError),
-    fork(logout),
+    //    fork(watchSignupRequest),
+    //    fork(watchSignupError),
+    fork(watchLoginRequest),
+    fork(watchLoginSuccess),
+    fork(watchLoginError),
+    fork(watchLogout),
     fork(syncAuthUser),
+    fork(watchResetPasswordRequest),
+    fork(watchResetPasswordError),
+    fork(watchResetPasswordSuccess)
   ]);
 }

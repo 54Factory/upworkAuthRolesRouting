@@ -21,7 +21,8 @@ class SignIn extends Component {
   };
 
   static defaultProps = {
-    errorMessage: null
+    errorMessage: null,
+    isLoggedIn: false
   };
 
   state = {
@@ -35,6 +36,13 @@ class SignIn extends Component {
       email: null, password: null
     }
   };
+
+  constructor() {
+    super();
+    this.validate = this.validate.bind(this);
+    this.onChange = this.onChange.bind(this);
+    this.handleLogin = this.handleLogin.bind(this);
+  }
 
   componentWillReceiveProps(nextProps) {
     const redirectToReferrer =
@@ -52,7 +60,7 @@ class SignIn extends Component {
     });
   }
 
-  handleLogin = (event, provider) => {
+  handleLogin(event, provider) {
     event.preventDefault();
     const { login } = this.props;
     if (provider === 'email') {
@@ -66,7 +74,7 @@ class SignIn extends Component {
     //this.props.history.push('/dashboard');
   };
 
-  validate = (fieldName, fieldValue) => {
+  validate(fieldName, fieldValue) {
     let errorMsg = null;
     let fieldStatus = 'success';
 
@@ -95,11 +103,12 @@ class SignIn extends Component {
     return errorMsg;
   }
 
-  onChange = e => {
+  onChange(e) {
     e.preventDefault();
+    const { name, value } = e.target;
     this.setState({
-      [e.target.name]: e.target.value
-    }, this.validate(e.target.name, e.target.value));
+      [name]: value
+    }, () => this.validate(name, value));
   }
 
   render() {
@@ -173,11 +182,6 @@ class SignIn extends Component {
                   <IntlMessages id="page.signInGooglePlus" />
                 </Button>
               </div>
-              <div className="isoCenterComponent isoHelperWrapper">
-                <Link to="/signup">
-                  <IntlMessages id="page.signInCreateAccount" />
-                </Link>
-              </div>
             </Form>
           </div>
         </div>
@@ -190,7 +194,7 @@ export { SignIn };
 
 export default connect(
   state => ({
-    isLoggedIn: state.Auth.user !== null ? true : false,
+    isLoggedIn: state.Auth.authUser !== null ? true : false,
     errorMessage: state.Auth.error || null,
   }),
   { login }

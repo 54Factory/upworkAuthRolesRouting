@@ -5,8 +5,9 @@ const actions = {
 
   LOGOUT: 'LOGOUT',
 
-  SIGNUP_REQUEST: 'SIGNUP_REQUEST',
-  SIGNUP_ERROR: 'SIGNUP_ERROR',
+  SET_ROLE: 'SET_ROLE',
+  //  SIGNUP_REQUEST: 'SIGNUP_REQUEST',
+  //  SIGNUP_ERROR: 'SIGNUP_ERROR',
 
   RESET_PASSWORD_REQUEST: 'RESET_PASSWORD_REQUEST',
   RESET_PASSWORD_SUCCESS: 'RESET_PASSWORD_SUCCESS',
@@ -25,10 +26,10 @@ const actions = {
    * @param {String} info.email
    * @param {String} info.password
    */
-  signup: (info) => ({
-    type: actions.SIGNUP_REQUEST,
-    info
-  }),
+  //  signup: (info) => ({
+  //    type: actions.SIGNUP_REQUEST,
+  //    info
+  //  }),
 
   /**
    * Login for user

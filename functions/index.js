@@ -17,7 +17,8 @@ db.settings({
  */
 const ROLES = {
   ADMIN: 'ADMIN',
-  DEFAULT: 'DEFAULT'
+  DRIVER: 'DRIVER',
+  CUSTOMER: 'CUSTOMER'
 };
 
 /**
@@ -27,16 +28,23 @@ const ROLES = {
  * @param {Object} context Details about the event.
  */
 function createProfile(userRecord, context) {
-  return db
-    .collection('Users')
-    .doc(userRecord.uid)
-    .set({
-      displayName: userRecord.displayName,
-      photoURL: userRecord.photoURL,
-      email: userRecord.email
-    })
-    .catch(console.error);
-
+  // create custom claims to set user role
+  // TODO set call function differently to set role
+  admin.auth().setCustomUserClaims(userRecord.uid, { role: ROLES.ADMIN }).then(() => {
+    // Create new user in Users collection
+    return db.collection('Users')
+      .doc(userRecord.uid)
+      .set({
+        created_on: new Date().getTime(),
+        updated_on: new Date().getTime(),
+        displayName: userRecord.displayName,
+        photoURL: userRecord.photoURL,
+        email: userRecord.email
+      })
+      .catch(console.error);
+  }).catch(error => {
+    console.log(error);
+  });
 }
 
 /**
@@ -50,7 +58,7 @@ function createRoles(userRecord, context) {
     .collection('Roles')
     .doc(userRecord.uid)
     .set({
-      roles: [ROLES.DEFAULT]
+      hasDeclaredRole: false
     })
     .catch(console.error);
 
@@ -84,54 +92,15 @@ function deleteRoles(userRecord, context) {
     .catch(console.error);
 }
 
-/** Sends a welcome email
- *
- * @param {Object} userRecord Contains the uid and email
- * @param {Object} context Details about the event.
- */
-function sendWelcomeEmail(userRecord, context) {
-  // Generate test SMTP service account from ethereal.email
-  // Only needed if you don't have a real mail account for testing
-  //nodemailer.createTestAccount((err, account) => {
-  //  // create reusable transporter object using the default SMTP transport
-  //  let transporter = nodemailer.createTransport({
-  //      host: 'smtp.ethereal.email',
-  //      port: 587,
-  //      secure: false, // true for 465, false for other ports
-  //      auth: {
-  //          user: account.user, // generated ethereal user
-  //          pass: account.pass // generated ethereal password
-  //      }
-  //  });
-  //  // setup email data with unicode symbols
-  //  let mailOptions = {
-  //      from: '"Fred Foo 👻" <foo@example.com>', // sender address
-  //      to: userRecord.email, // list of receivers
-  //      subject: 'Welcome to _', // Subject line
-  //      text: welcome.text, // plain text body
-  //      html: welcome.html// html body
-  //  };
-  //  // send mail with defined transport object
-  //  transporter.sendMail(mailOptions, (error, info) => {
-  //      if (error) {
-  //          return console.log(error);
-  //      }
-  //      console.log('Message sent: %s', info.messageId);
-  //      // Preview only available when sending through an Ethereal account
-  //      console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-  //  });
-  //});
-}
-
 module.exports = {
   authOnCreate: functions.auth.user().onCreate((userRecord, context) => {
-    createRoles(userRecord, context);
+    //createRoles(userRecord, context);
     createProfile(userRecord, context);
-    sendWelcomeEmail(userRecord, context);
+    //    sendWelcomeEmail(userRecord, context);
     return 200;
   }),
   authOnDelete: functions.auth.user().onDelete((userRecord, context) => {
-    deleteRoles(userRecord, context);
+    //    deleteRoles(userRecord, context);
     deleteProfile(userRecord, context);
     return 200;
   })

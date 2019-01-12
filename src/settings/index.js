@@ -21,10 +21,10 @@ const jwtConfig = {
 };
 
 const firebaseConfig = {
-  projectId: 'test-74eb3',
-  authDomain: 'test-74eb3.firebaseapp.com',
-  databaseURL: 'https://test-74eb3.firebaseio.com/',
-  apiKey: 'AIzaSyBY3GoyXaef8VHNiZ4i-r251bjQNEDmEzY'
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY
 };
 
 export {
