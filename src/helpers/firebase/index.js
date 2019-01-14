@@ -18,6 +18,7 @@ class FirebaseHelper {
   isValid = valid;
   constructor() {
     // bind methods
+    this.createUser = this.createUser.bind(this);
     this.handleAuthError = this.handleAuthError.bind(this);
     this.channel = this.channel.bind(this);
 
@@ -29,6 +30,41 @@ class FirebaseHelper {
 
     // new timestamp settings for firestore
     firebase.firestore().settings({ timestampsInSnapshots: true });
+  }
+
+  /**
+   * Invokes 'createUser' cloud function
+   * must be logged in as an admin to call
+   * @param {Object} userInfo
+   * @param {String} userInfo.email
+   * @param {String} userInfo.role - 'DRIVER' or 'CUSTOMER'
+   * @param {String} userInfo.displayName
+   * @returns {Object} { err, json }
+   */
+  createUser(userInfo) {
+    //const testUrl = 'http://localhost:5000/test-74eb3/us-central1/createUser';
+    const url = `${process.env.REACT_APP_FIREBASE_CLOUD_FUNCTIONS}/createUser`;
+    this.rsfAuth().currentUser.getIdToken(true).then(token => {
+      fetch(url, {
+        method: 'post',
+        headers: {
+          "Content-type": "application/json; charset=UTF-8"
+        },
+        body: JSON.stringify({
+          token,
+          userInfo
+        })
+      })
+        .then(res => res.json())
+        .then(json => {
+          return { err: null, json };
+        })
+        .catch(err => {
+          return { err, json: null };
+        })
+    }).catch(err => {
+      return { err, json: null };
+    });
   }
 
   /**

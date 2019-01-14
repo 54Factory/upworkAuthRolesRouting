@@ -7,37 +7,6 @@ import notification from '../../components/notification';
 
 
 /**
- * Creates new user on SIGNUP_REQUEST
- */
-//export function* watchSignupRequest() {
-//  yield takeEvery(actions.SIGNUP_REQUEST, signupRequest);
-//}
-//export function* signupRequest(action) {
-//  try {
-//    const { email, password } = action.info;
-//    yield call(
-//      firebaseHelper.rsf.auth.createUserWithEmailAndPassword,
-//      email,
-//      password);
-//  } catch (err) {
-//    yield put({
-//      type: actions.SIGNUP_ERROR,
-//      error: firebaseHelper.handleAuthError(err)
-//    });
-//  }
-//}
-//
-///**
-// * Creates notification on signup error
-// */
-//export function* watchSignupError() {
-//  yield takeEvery(actions.SIGNUP_ERROR, signupError);
-//}
-//export function* signupError(action) {
-//  yield call(notification, 'error', 'Error', action.error);
-//}
-
-/**
  * Login to firebase on LOGIN_REQUEST
  */
 export function* watchLoginRequest() {
@@ -82,6 +51,10 @@ export function* watchLoginSuccess() {
   yield takeEvery(actions.LOGIN_SUCCESS, loginSuccess);
 }
 export function* loginSuccess(action) {
+  yield call(firebaseHelper.createUser, {
+    email: "test@gmail.com",
+    displayName: "test"
+  });
   yield call(notification, 'success', 'Success', `Logged in as ${action.authUser.email}.`);
   switch (action.role) {
     case 'ADMIN': {
