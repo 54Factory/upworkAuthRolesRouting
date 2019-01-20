@@ -51,10 +51,6 @@ export function* watchLoginSuccess() {
   yield takeEvery(actions.LOGIN_SUCCESS, loginSuccess);
 }
 export function* loginSuccess(action) {
-  yield call(firebaseHelper.createUser, {
-    email: "test@gmail.com",
-    displayName: "test"
-  });
   yield call(notification, 'success', 'Success', `Logged in as ${action.authUser.email}.`);
   switch (action.role) {
     case 'ADMIN': {
