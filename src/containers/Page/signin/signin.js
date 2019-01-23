@@ -174,6 +174,7 @@ class SignIn extends Component {
                 </Button>
               </FormItem>
 
+              {/**
               <div className="isoInputWrapper isoOtherLogin">
                 <Button onClick={e => this.handleLogin(e, 'facebook')} type="primary btnFacebook">
                   <IntlMessages id="page.signInFacebook" />
@@ -182,6 +183,7 @@ class SignIn extends Component {
                   <IntlMessages id="page.signInGooglePlus" />
                 </Button>
               </div>
+              **/}
             </Form>
           </div>
         </div>

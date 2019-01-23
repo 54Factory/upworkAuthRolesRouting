@@ -24,8 +24,9 @@ const transporter = nodemailer.createTransport({
  * @param {String} to
  * @param {String} subject
  * @param {String} text - message body
+ * @return {Promise}
  */
-function sendEmail(from, to, subject, text) {
+function sendEmail({ from, to, subject, text }) {
   const options = {
     from, to, subject, text
   };

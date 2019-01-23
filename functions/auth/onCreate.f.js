@@ -16,26 +16,28 @@ exports = module.exports = functions.auth.user().onCreate((userRecord, context) 
   /**
    * Test code to create admin
    */
-  if (userRecord.email === 'admin@admin.com') {
+  if (userRecord.email === 'admin@admin.co') {
     const newAdmin = admin.auth().setCustomUserClaims(userRecord.uid, { role: 'ADMIN' })
 
     console.log(`Admin ${userRecord.uid} created`);
 
     promises.push(newAdmin);
+
+    // Create new user in Users collection
+    const user = db.collection('Users')
+      .doc(userRecord.uid)
+      .set({
+        role: 'ADMIN',
+        created_on: new Date().getTime(),
+        updated_on: new Date().getTime(),
+        displayName: userRecord.displayName,
+        email: userRecord.email
+      })
+      .catch(console.error);
+
+    promises.push(user);
   }
 
-  // Create new user in Users collection
-  const user = db.collection('Users')
-    .doc(userRecord.uid)
-    .set({
-      created_on: new Date().getTime(),
-      updated_on: new Date().getTime(),
-      displayName: userRecord.displayName,
-      email: userRecord.email
-    })
-    .catch(console.error);
-
-  promises.push(user);
 
   return Promise.all(promises);
 });

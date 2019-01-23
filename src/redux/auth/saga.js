@@ -14,23 +14,20 @@ export function* watchLoginRequest() {
 }
 export function* loginRequest(action) {
   try {
-    let provider;
-    let method;
+    let credential;
+    const method = firebaseHelper.rsf.auth.signInAndRetrieveDataWithCredential;
     switch(action.provider) {
       case 'email':
-        provider = new firebaseHelper.rsfAuth.EmailAuthProvider();
-        method = firebaseHelper.rsf.auth.signInWithEmailAndPassword;
-        yield call(method, action.info.email, action.info.password);
+        credential = firebaseHelper.rsfAuth.EmailAuthProvider.credential(action.info.email, action.info.password);
+        yield call(method, credential);
         break;
       case 'google':
-        provider = new firebaseHelper.rsfAuth.GoogleAuthProvider();
-        method = firebaseHelper.rsf.auth.signInWithPopup;
-        yield call(method, provider);
+        credential = firebaseHelper.rsfAuth.GoogleAuthProvider.credential;
+        yield call(method, credential);
         break;
       case 'facebook':
-        provider = new firebaseHelper.rsfAuth.FacebookAuthProvider();
-        method = firebaseHelper.rsf.auth.signInWithPopup();
-        yield call(method, provider);
+        credential = firebaseHelper.rsfAuth.FacebookAuthProvider.credential;
+        yield call(method, credential);
         break;
       default: break;
     }

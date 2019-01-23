@@ -1,6 +1,8 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 
+//const email = require('../email');
+
 // try { admin.initializeApp() } catch (e) { console.log(e) }
 
 const db = admin.firestore();
@@ -63,7 +65,14 @@ exports = module.exports = functions.https.onCall((data, context) => {
   })
   .then(userRecord => {
     // set custom claims
-    admin.auth().setCustomUserClaims(userRecord.uid, { role });
+    admin.auth().setCustomUserClaims(userRecord.uid, { role }).then(() => {
+      db.collection('Users')
+        .doc(userRecord.uid)
+        .set(Object.assign({
+          created_on: new Date().getTime(),
+          updated_on: new Date().getTime(),
+        }, data));
+    });
     // create setup link
     return createSetupLink(userRecord.uid);
   })

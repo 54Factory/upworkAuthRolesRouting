@@ -3,7 +3,7 @@ import { Route, Redirect } from 'react-router-dom';
 import { ConnectedRouter } from 'react-router-redux';
 import { connect } from 'react-redux';
 
-import App from './containers/App/App';
+import Admin from './containers/Admin';
 import asyncComponent from './helpers/AsyncFunc';
 
 const RestrictedRoute = ({ component: Component, allowed, ...rest }) => (
@@ -45,7 +45,7 @@ const PublicRoutes = ({ history, isLoggedIn, role }) => {
 
         <RestrictedRoute
           path="/admin"
-          component={App}
+          component={Admin}
           allowed={isLoggedIn && role === 'ADMIN'}
         />
       </div>
