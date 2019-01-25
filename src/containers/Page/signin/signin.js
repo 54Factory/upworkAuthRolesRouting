@@ -17,16 +17,17 @@ const { login } = authAction;
 class SignIn extends Component {
   static propTypes = {
     isLoggedIn: PropTypes.bool.isRequired,
-    errorMessage: PropTypes.string
+    errorMessage: PropTypes.string,
+    role: PropTypes.string
   };
 
   static defaultProps = {
     errorMessage: null,
+    role: null,
     isLoggedIn: false
   };
 
   state = {
-    redirectToReferrer: false,
     email: '',
     password: '',
     errors: {
@@ -44,12 +45,20 @@ class SignIn extends Component {
     this.handleLogin = this.handleLogin.bind(this);
   }
 
+  componentWillMount() {
+    if (this.props.isLoggedIn && this.props.role) {
+      switch(this.props.role) {
+        case 'ADMIN': {
+          this.props.history.push('/admin');
+          break;
+        }
+        default: break;
+      }
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
-    const redirectToReferrer =
-      this.props.isLoggedIn !== nextProps.isLoggedIn &&
-      nextProps.isLoggedIn === true;
     this.setState({
-      redirectToReferrer,
       errors: {
         email: null, password: null
       },
@@ -112,12 +121,8 @@ class SignIn extends Component {
   }
 
   render() {
-    const from = { pathname: '/dashboard' };
     const { redirectToReferrer } = this.state;
 
-    if (redirectToReferrer) {
-      return <Redirect to={from} />;
-    }
     return (
       <SignInStyleWrapper className="isoSignInPage">
         <div className="isoLoginContentWrapper">
@@ -197,6 +202,7 @@ export { SignIn };
 export default connect(
   state => ({
     isLoggedIn: state.Auth.authUser !== null ? true : false,
+    role: state.Auth.role || null,
     errorMessage: state.Auth.error || null,
   }),
   { login }

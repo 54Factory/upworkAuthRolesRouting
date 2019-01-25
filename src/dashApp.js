@@ -17,22 +17,24 @@ import Boot from "./redux/boot";
 const currentAppLocale =
   AppLocale[getCurrentLanguage(config.defaultLanguage || "english").locale];
 
-const DashApp = () => (
-  <LocaleProvider locale={currentAppLocale.antd}>
-    <IntlProvider
-      locale={currentAppLocale.locale}
-      messages={currentAppLocale.messages}
-    >
-      <ThemeProvider theme={themes[themeConfig.theme]}>
-        <DashAppHolder>
-          <Provider store={store}>
-            <PublicRoutes history={history} />
-          </Provider>
-        </DashAppHolder>
-      </ThemeProvider>
-    </IntlProvider>
-  </LocaleProvider>
-);
+const DashApp = () => {
+  return (
+    <LocaleProvider locale={currentAppLocale.antd}>
+      <IntlProvider
+        locale={currentAppLocale.locale}
+        messages={currentAppLocale.messages}
+      >
+        <ThemeProvider theme={themes[themeConfig.theme]}>
+          <DashAppHolder>
+            <Provider store={store}>
+              <PublicRoutes history={history} />
+            </Provider>
+          </DashAppHolder>
+        </ThemeProvider>
+      </IntlProvider>
+    </LocaleProvider>
+  );
+}
 Boot()
   .then(() => DashApp())
   .catch(error => console.error(error));

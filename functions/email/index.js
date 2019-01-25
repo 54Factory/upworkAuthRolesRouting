@@ -1,19 +1,19 @@
 const nodemailer = require('nodemailer');
-const fs = require('fs');
-
-// read .env variables for mail config
-let env = {};
-fs.readFileSync('../../.env')
-  .toString()
-  .match(/EMAIL\S*/g)
-  .forEach(line => {
-    env[line.split('=')[0]] = line.split('=')[1].replace(/(\'|\")/g, '');
-  });
+//const fs = require('fs');
+//
+//// read .env variables for mail config
+//let env = {};
+//fs.readFileSync('../../.env')
+//  .toString()
+//  .match(/EMAIL\S*/g)
+//  .forEach(line => {
+//    env[line.split('=')[0]] = line.split('=')[1].replace(/(\'|\")/g, '');
+//  });
 
 const transporter = nodemailer.createTransport({
   service: env.EMAIL_SERVICE_PROVIDER,
   auth: {
-    user: env.EMAILER_AUTH_USERNAME,
+    user: env.EMAIL_AUTH_USER,
     pass: env.EMAIL_AUTH_PASSWORD
   }
 });
