@@ -18,6 +18,9 @@ REACT_APP_FIREBASE_API_KEY=your_api_key
 REACT_APP_FIREBASE_CLOUD_FUNCTIONS=your_cloud_function_url
 ``
 
+- Create admin user
+    login to firebase console and create a user with the email `admin@admin.co`
+
 ## Database Graph
 https://mongo.tools/ed/project/5c3645b263d6f961f60e9787
 
