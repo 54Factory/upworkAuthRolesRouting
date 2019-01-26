@@ -9,7 +9,9 @@ const initState = {
   height: window.innerHeight,
   openDrawer: false,
   openKeys: preKeys,
-  current: preKeys
+  current: preKeys,
+  loading: true,
+  // if route is not null we'll push to it on page load
 };
 export default function appReducer(state = initState, action) {
   switch (action.type) {
@@ -34,6 +36,8 @@ export default function appReducer(state = initState, action) {
       return { ...state, current: action.current };
     case actions.CLOSE_ALL:
       return { ...state, current: [], openKeys: [] };
+    case actions.SET_LOADING:
+      return { ...state, loading: action.loading };
     default:
       return state;
   }

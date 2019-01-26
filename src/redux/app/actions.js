@@ -14,6 +14,7 @@ const actions = {
   TOGGLE_ALL: 'TOGGLE_ALL',
   CHANGE_CURRENT: 'CHANGE_CURRENT',
   CLOSE_ALL: 'CLOSE_ALL',
+  SET_LOADING: 'SET_LOADING',
   toggleCollapsed: () => ({
     type: actions.COLLPSE_CHANGE
   }),
@@ -38,6 +39,10 @@ const actions = {
     type: actions.CHANGE_CURRENT,
     current
   }),
-  closeAll: () => ({ type: actions.CLOSE_ALL })
+  closeAll: () => ({ type: actions.CLOSE_ALL }),
+  setLoading: loading => ({
+    type: actions.SET_LOADING,
+    loading
+  })
 };
 export default actions;

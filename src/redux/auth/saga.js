@@ -3,39 +3,9 @@ import { push } from 'react-router-redux';
 
 import firebaseHelper from '../../helpers/firebase';
 import actions from './actions';
+import appActions from '../app/actions';
 import notification from '../../components/notification';
 
-
-/**
- * Creates new user on SIGNUP_REQUEST
- */
-//export function* watchSignupRequest() {
-//  yield takeEvery(actions.SIGNUP_REQUEST, signupRequest);
-//}
-//export function* signupRequest(action) {
-//  try {
-//    const { email, password } = action.info;
-//    yield call(
-//      firebaseHelper.rsf.auth.createUserWithEmailAndPassword,
-//      email,
-//      password);
-//  } catch (err) {
-//    yield put({
-//      type: actions.SIGNUP_ERROR,
-//      error: firebaseHelper.handleAuthError(err)
-//    });
-//  }
-//}
-//
-///**
-// * Creates notification on signup error
-// */
-//export function* watchSignupError() {
-//  yield takeEvery(actions.SIGNUP_ERROR, signupError);
-//}
-//export function* signupError(action) {
-//  yield call(notification, 'error', 'Error', action.error);
-//}
 
 /**
  * Login to firebase on LOGIN_REQUEST
@@ -45,24 +15,25 @@ export function* watchLoginRequest() {
 }
 export function* loginRequest(action) {
   try {
-    let provider;
-    let method;
+    let credential;
+    const method = firebaseHelper.rsf.auth.signInAndRetrieveDataWithCredential;
     switch(action.provider) {
       case 'email':
-        provider = new firebaseHelper.rsfAuth.EmailAuthProvider();
-        method = firebaseHelper.rsf.auth.signInWithEmailAndPassword;
-        yield call(method, action.info.email, action.info.password);
+        credential = firebaseHelper
+          .rsfAuth
+          .EmailAuthProvider
+          .credential(action.info.email, action.info.password);
+
+        yield call(method, credential);
         break;
-      case 'google':
-        provider = new firebaseHelper.rsfAuth.GoogleAuthProvider();
-        method = firebaseHelper.rsf.auth.signInWithPopup;
-        yield call(method, provider);
-        break;
-      case 'facebook':
-        provider = new firebaseHelper.rsfAuth.FacebookAuthProvider();
-        method = firebaseHelper.rsf.auth.signInWithPopup();
-        yield call(method, provider);
-        break;
+        //      case 'google':
+        //        credential = firebaseHelper.rsfAuth.GoogleAuthProvider.credential;
+        //        yield call(method, credential);
+        //        break;
+        //      case 'facebook':
+        //        credential = firebaseHelper.rsfAuth.FacebookAuthProvider.credential;
+        //        yield call(method, credential);
+        //        break;
       default: break;
     }
     // successful login will trigger the syncUser, which will update the state
@@ -81,15 +52,14 @@ export function* loginRequest(action) {
 export function* watchLoginSuccess() {
   yield takeEvery(actions.LOGIN_SUCCESS, loginSuccess);
 }
+
 export function* loginSuccess(action) {
+  if (window) window.localStorage.setItem('loggedIn', true);
+  yield put({
+    type: appActions.SET_LOADING,
+    loading: false
+  });
   yield call(notification, 'success', 'Success', `Logged in as ${action.authUser.email}.`);
-  switch (action.role) {
-    case 'ADMIN': {
-      yield put(push('/admin'));
-      break;
-    }
-    default: break;
-  }
 }
 
 /**
@@ -109,6 +79,7 @@ export function* watchLogout() {
   yield takeEvery(actions.LOGOUT, logout);
 }
 export function* logout() {
+  if (window) window.localStorage.removeItem('loggedIn');
   try {
     yield call(firebaseHelper.rsf.auth.signOut);
     yield put(push('/'));
@@ -123,12 +94,12 @@ export function* logout() {
  * @param user {object} - firebase user object
  * @returns role one of "ADMIN" "CUSTOMER" "DRIVER"
  */
-const getRole = user => {
+function getRole(user) {
   return user.getIdToken(true).then(async () => {
     const token = await user.getIdTokenResult();
     return token.claims.role;
   });
-};
+}
 
 /**
  * Update user info when user changes

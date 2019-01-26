@@ -2,6 +2,7 @@ import firebase from 'firebase';
 import ReduxSagaFirebase from 'redux-saga-firebase';
 import { buffers, eventChannel } from 'redux-saga';
 import 'firebase/firestore';
+import 'firebase/functions';
 import { firebaseConfig } from '../../settings';
 
 const valid =
@@ -21,6 +22,7 @@ class FirebaseHelper {
     this.handleAuthError = this.handleAuthError.bind(this);
     this.channel = this.channel.bind(this);
 
+    this.functions = this.isValid && firebase.functions();
     this.database = this.isValid && firebase.firestore();
     this.rsfAuth = firebaseAuth;
     this.rsf =
@@ -30,6 +32,7 @@ class FirebaseHelper {
     // new timestamp settings for firestore
     firebase.firestore().settings({ timestampsInSnapshots: true });
   }
+
 
   /**
    * Creates channel for firestore collection or document

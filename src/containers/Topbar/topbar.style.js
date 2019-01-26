@@ -69,6 +69,7 @@ const TopbarWrapper = styled.div`
     .isoRight {
       display: flex;
       align-items: center;
+      margin: 0;
 
       li {
         margin-left: ${props => (props["data-rtl"] === "rtl" ? "35px" : "0")};

@@ -8,16 +8,12 @@ const routes = [
     component: asyncComponent(() => import('../dashboard')),
   },
   {
-    path: 'blankPage',
-    component: asyncComponent(() => import('../blankPage')),
-  },
-  {
-    path: 'authCheck',
-    component: asyncComponent(() => import('../AuthCheck')),
-  },
+    path: 'users',
+    component: asyncComponent(() => import('../users'))
+  }
 ];
 
-class AppRouter extends Component {
+class AdminRouter extends Component {
   render() {
     const { url, style } = this.props;
     return (
@@ -38,4 +34,4 @@ class AppRouter extends Component {
   }
 }
 
-export default AppRouter;
+export default AdminRouter;

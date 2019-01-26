@@ -8,24 +8,24 @@ import authAction from '../../redux/auth/actions';
 import appActions from '../../redux/app/actions';
 import Sidebar from '../Sidebar/Sidebar';
 import Topbar from '../Topbar/Topbar';
-import AppRouter from './AppRouter';
+import AppRouter from './AdminRouter';
 import { siteConfig } from '../../settings';
 import themes from '../../settings/themes';
 import { themeConfig } from '../../settings';
-import AppHolder from './commonStyle';
+import AdminHolder from './commonStyle';
 import './global.css';
 
 const { Content, Footer } = Layout;
 const { logout } = authAction;
 const { toggleAll } = appActions;
-export class App extends Component {
+export class Admin extends Component {
   render() {
     const { url } = this.props.match;
     const { height } = this.props;
     const appHeight = window.innerHeight;
     return (
       <ThemeProvider theme={themes[themeConfig.theme]}>
-        <AppHolder>
+        <AdminHolder>
           <Layout style={{ height: appHeight }}>
             <Debounce time="1000" handler="onResize">
               <WindowResizeListener
@@ -69,7 +69,7 @@ export class App extends Component {
               </Layout>
             </Layout>
           </Layout>
-        </AppHolder>
+        </AdminHolder>
       </ThemeProvider>
     );
   }
@@ -81,4 +81,4 @@ export default connect(
     height: state.App.height
   }),
   { logout, toggleAll }
-)(App);
+)(Admin);

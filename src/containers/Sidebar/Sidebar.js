@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import clone from 'clone';
 import { Link } from 'react-router-dom';
-import { Layout } from 'antd';
+import { Layout, } from 'antd';
 import options from './options';
 import Scrollbars from '../../components/utility/customScrollBar.js';
 import Menu from '../../components/uielements/menu';
@@ -78,7 +78,7 @@ class Sidebar extends Component {
             <span className="isoMenuHolder" style={submenuColor}>
               <i className={leftIcon} />
               <span className="nav-text">
-                <IntlMessages id={label} />
+                {label}
               </span>
             </span>
           }
@@ -104,7 +104,7 @@ class Sidebar extends Component {
           <span className="isoMenuHolder" style={submenuColor}>
             <i className={leftIcon} />
             <span className="nav-text">
-              <IntlMessages id={label} />
+              {label}
             </span>
           </span>
         </Link>
@@ -112,6 +112,7 @@ class Sidebar extends Component {
     );
   };
   render() {
+    const { role } = this.props;
     const { app, toggleOpenDrawer, height } = this.props;
     const collapsed = clone(app.collapsed) && !clone(app.openDrawer);
     const { openDrawer } = app;
@@ -162,7 +163,7 @@ class Sidebar extends Component {
               selectedKeys={app.current}
               onOpenChange={this.onOpenChange}
             >
-              {options.map(singleOption =>
+              {options.filter(option => option.role === this.props.role).map(singleOption =>
                 this.getMenuItem({ submenuStyle, submenuColor, singleOption })
               )}
             </Menu>
@@ -176,6 +177,7 @@ class Sidebar extends Component {
 export default connect(
   state => ({
     app: state.App,
+    role: state.Auth.role,
     height: state.App.height
   }),
   { toggleOpenDrawer, changeOpenKeys, changeCurrent, toggleCollapsed }

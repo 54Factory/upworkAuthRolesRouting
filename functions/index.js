@@ -1,10 +1,6 @@
-const functions = require('firebase-functions');
 const admin = require('firebase-admin');
-const nodemailer = require('nodemailer');
 
-const welcome = require('./emailTemplates/welcome');
-
-admin.initializeApp();
+try { admin.initializeApp(); } catch (e) { console.log(e); }
 
 const db = admin.firestore();
 
@@ -13,95 +9,20 @@ db.settings({
 });
 
 /**
- * Roles to define what permissons a given user has
- */
-const ROLES = {
-  ADMIN: 'ADMIN',
-  DRIVER: 'DRIVER',
-  CUSTOMER: 'CUSTOMER'
-};
-
-/**
- * Creates a document with ID -> uid in the `Users` collection.
+ *   Loads all `.f.js` files
+ *   Exports a cloud function matching the file name
  *
- * @param {Object} userRecord Contains the auth, uid and displayName info.
- * @param {Object} context Details about the event.
+ *   Based on this thread:
+ *     https://github.com/firebase/functions-samples/issues/170
  */
-function createProfile(userRecord, context) {
-  // create custom claims to set user role
-  // TODO set call function differently to set role
-  admin.auth().setCustomUserClaims(userRecord.uid, { role: ROLES.ADMIN }).then(() => {
-    // Create new user in Users collection
-    return db.collection('Users')
-      .doc(userRecord.uid)
-      .set({
-        created_on: new Date().getTime(),
-        updated_on: new Date().getTime(),
-        displayName: userRecord.displayName,
-        photoURL: userRecord.photoURL,
-        email: userRecord.email
-      })
-      .catch(console.error);
-  }).catch(error => {
-    console.log(error);
-  });
+const glob = require('glob')
+const camelCase = require('camelcase')
+
+const files = glob.sync('./**/*.f.js', { cwd: __dirname, ignore: './node_modules/**' })
+for (let f = 0, fl = files.length; f < fl; f++) {
+  const file = files[f]
+  const functionName = camelCase(file.slice(0, -5).split('/').join('_')) // Strip off '.f.js'
+  if (!process.env.FUNCTION_NAME || process.env.FUNCTION_NAME === functionName) {
+    exports[functionName] = require(file)
+  }
 }
-
-/**
- * Creates a document with ID -> uid in the 'Roles' collection.
- *
- * @param {Object} userRecord Contains the auth, uid and displayName info.
- * @param {Object} context Details about the event.
- */
-function createRoles(userRecord, context) {
-  return db
-    .collection('Roles')
-    .doc(userRecord.uid)
-    .set({
-      hasDeclaredRole: false
-    })
-    .catch(console.error);
-
-}
-
-/**
- * Delete user document with ID -> uid in the 'Users collection'.
- *
- * @param {Object} userRecord Contains the auth, uid and displayName info.
- * @param {Object} context Details about the event.
- */
-function deleteProfile(userRecord, context) {
-  return db
-    .collection('Users')
-    .doc(userRecord.uid)
-    .delete()
-    .catch(console.error);
-};
-
-/**
- * deletes a document with ID -> uid in the 'Roles' collection.
- *
- * @param {Object} userRecord Contains the auth, uid and displayName info.
- * @param {Object} context Details about the event.
- */
-function deleteRoles(userRecord, context) {
-  return db
-    .collection('Roles')
-    .doc(userRecord.uid)
-    .delete()
-    .catch(console.error);
-}
-
-module.exports = {
-  authOnCreate: functions.auth.user().onCreate((userRecord, context) => {
-    //createRoles(userRecord, context);
-    createProfile(userRecord, context);
-    //    sendWelcomeEmail(userRecord, context);
-    return 200;
-  }),
-  authOnDelete: functions.auth.user().onDelete((userRecord, context) => {
-    //    deleteRoles(userRecord, context);
-    deleteProfile(userRecord, context);
-    return 200;
-  })
-};

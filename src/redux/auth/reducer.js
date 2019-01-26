@@ -29,7 +29,7 @@ export default function authReducer(state = initState, action) {
         error: action.error,
         role: null,
         authUser: null
-      }
+      };
     case actions.LOGOUT:
       return initState;
     case actions.RESET_PASSWORD_ERROR:
