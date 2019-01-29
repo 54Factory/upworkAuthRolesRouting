@@ -10,9 +10,10 @@
     `firebase functions:config:set email.auth.user=your_email`
     `firebase functions:config:set email.auth.password=your_password`
 
-- Set enviorment variables
+- Set environment variables
     `touch .env`
     ```
+    # Paste this into .env
     REACT_APP_FIREBASE_PROJECT_ID=your_project_id
     REACT_APP_FIREBASE_AUTH_DOMAIN=your_auth_domain
     REACT_APP_FIREBASE_DATABASE_URL=your_database_url
