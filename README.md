@@ -5,6 +5,14 @@
     - `git clone https://github.com/54Factory/upworkAuthRolesRouting.git`
     - `cd upworkAuthRolesRouting`
 
+- Install dependencies
+    - `npm install` or `yarn install`
+    - `cd functions && npm install`
+
+- Initialize Firebase
+    - `firebase init`
+    - Don't overwrite any files
+
 - Configure email provider
     - `firebase functions:config:set email.provider=Gmail`
     - `firebase functions:config:set email.auth.user=your_email`
