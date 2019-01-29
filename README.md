@@ -2,30 +2,30 @@
 
 ## Setup
 - Clone repo
-    `git clone https://github.com/54Factory/upworkAuthRolesRouting.git`
-    `cd upworkAuthRolesRouting`
+    - `git clone https://github.com/54Factory/upworkAuthRolesRouting.git`
+    - `cd upworkAuthRolesRouting`
 
 - Configure email provider
-    `firebase functions:config:set email.provider=Gmail`
-    `firebase functions:config:set email.auth.user=your_email`
-    `firebase functions:config:set email.auth.password=your_password`
+    - `firebase functions:config:set email.provider=Gmail`
+    - `firebase functions:config:set email.auth.user=your_email`
+    - `firebase functions:config:set email.auth.password=your_password`
 
 - Set environment variables
-    `touch .env`
-    ```
-    # Paste this into .env
-    REACT_APP_FIREBASE_PROJECT_ID=your_project_id
-    REACT_APP_FIREBASE_AUTH_DOMAIN=your_auth_domain
-    REACT_APP_FIREBASE_DATABASE_URL=your_database_url
-    REACT_APP_FIREBASE_API_KEY=your_api_key
-    REACT_APP_FIREBASE_CLOUD_FUNCTIONS=your_cloud_function_url
-    ```
+    - `touch .env`
+    - ```
+      # Paste this into .env
+      REACT_APP_FIREBASE_PROJECT_ID=your_project_id
+      REACT_APP_FIREBASE_AUTH_DOMAIN=your_auth_domain
+      REACT_APP_FIREBASE_DATABASE_URL=your_database_url
+      REACT_APP_FIREBASE_API_KEY=your_api_key
+      REACT_APP_FIREBASE_CLOUD_FUNCTIONS=your_cloud_function_url
+      ```
 
 - Create admin user
-    login to firebase console and create a user with the email `admin@admin.co`
+    - login to firebase console and create a user with the email `admin@admin.co`
 
 - Run
-    `yarn start` or `npm run start`
+    - `yarn start` or `npm run start`
 
 ## Database Graph
 https://mongo.tools/ed/project/5c3645b263d6f961f60e9787
