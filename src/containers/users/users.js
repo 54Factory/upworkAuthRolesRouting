@@ -3,7 +3,7 @@ import { Button, Table, Icon, Tag } from 'antd';
 import { connect } from 'react-redux';
 import LayoutContentWrapper from '../../components/utility/layoutWrapper';
 import LayoutContent from '../../components/utility/layoutContent';
-import notification from '../../components/notification';
+//import notification from '../../components/notification';
 
 import UsersStyleWrapper from './users.style';
 import Firebase from '../../helpers/firebase';
@@ -19,7 +19,6 @@ class Users extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.state = {
       users: [],
-      usersCount: null,
       loading: true,
       filteredInfo: null,
       sortedInfo: null
@@ -30,7 +29,6 @@ class Users extends Component {
     let users = [];
     Firebase.database.collection('Users')
       .onSnapshot(querySnapshot => {
-        this.setState({ usersCount: querySnapshot.size });
         querySnapshot.forEach((doc) => {
           let i = users.findIndex(u => u.key === doc.id);
           if (i >= 0) {
@@ -62,7 +60,7 @@ class Users extends Component {
   }
 
   render() {
-    const { createUserVisible, users, usersCount, loading } = this.state;
+    const { createUserVisible, users, loading } = this.state;
     const { view } = this.props;
     const filteredInfo = this.state.filteredInfo || {};
     const sortedInfo = this.state.sortedInfo || {};

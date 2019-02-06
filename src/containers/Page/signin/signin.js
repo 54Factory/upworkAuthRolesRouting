@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 //import Input from '../../components/uielements/input';
@@ -121,7 +121,7 @@ class SignIn extends Component {
   }
 
   render() {
-    const { redirectToReferrer } = this.state;
+    //const { redirectToReferrer } = this.state;
 
     return (
       <SignInStyleWrapper className="isoSignInPage">

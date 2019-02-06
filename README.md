@@ -17,13 +17,12 @@
 
 Create a file called .env and paste this into it.
 
-```
-REACT_APP_FIREBASE_PROJECT_ID=your_project_id
-REACT_APP_FIREBASE_AUTH_DOMAIN=your_auth_domain
-REACT_APP_FIREBASE_DATABASE_URL=your_database_url
-REACT_APP_FIREBASE_API_KEY=your_api_key
-REACT_APP_FIREBASE_CLOUD_FUNCTIONS=your_cloud_function_url
-```
+    # upworkAuthRolesRouting/.env
+    REACT_APP_FIREBASE_PROJECT_ID=your_project_id
+    REACT_APP_FIREBASE_AUTH_DOMAIN=your_auth_domain
+    REACT_APP_FIREBASE_DATABASE_URL=your_database_url
+    REACT_APP_FIREBASE_API_KEY=your_api_key
+    REACT_APP_FIREBASE_CLOUD_FUNCTIONS=your_cloud_function_url
 
 **Create admin user**
 

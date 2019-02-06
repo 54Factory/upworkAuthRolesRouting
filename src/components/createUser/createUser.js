@@ -5,9 +5,9 @@ import notification from '../notification';
 
 import CreateUserWrapper from './createUser.style';
 
-function hasErrors(fieldsError) {
-  return Object.keys(fieldsError).some(field => fieldsError[field]);
-}
+//function hasErrors(fieldsError) {
+//  return Object.keys(fieldsError).some(field => fieldsError[field]);
+//}
 
 class CreateUser extends Component {
   constructor() {
@@ -64,7 +64,8 @@ class CreateUser extends Component {
 
   render() {
     const {
-      getFieldDecorator, getFieldsError
+      getFieldDecorator,
+      // getFieldsError
     } = this.props.form;
     const { loading } = this.state;
 
@@ -76,19 +77,6 @@ class CreateUser extends Component {
       wrapperCol: {
         xs: { span: 24 },
         sm: { span: 16 },
-      },
-    };
-
-    const tailFormItemLayout = {
-      wrapperCol: {
-        xs: {
-          span: 24,
-          offset: 0,
-        },
-        sm: {
-          span: 16,
-          offset: 6,
-        },
       },
     };
 

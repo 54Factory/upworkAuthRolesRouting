@@ -1,20 +1,13 @@
 const nodemailer = require('nodemailer');
-//const fs = require('fs');
-//
-//// read .env variables for mail config
-//let env = {};
-//fs.readFileSync('../../.env')
-//  .toString()
-//  .match(/EMAIL\S*/g)
-//  .forEach(line => {
-//    env[line.split('=')[0]] = line.split('=')[1].replace(/(\'|\")/g, '');
-//  });
+const functions = require('firebase-functions');
+
+const config = functions.config();
 
 const transporter = nodemailer.createTransport({
-  service: env.EMAIL_SERVICE_PROVIDER,
+  service: config.email.provider,
   auth: {
-    user: env.EMAIL_AUTH_USER,
-    pass: env.EMAIL_AUTH_PASSWORD
+    user: config.email.auth.user,
+    pass: config.email.auth.pass
   }
 });
 
@@ -26,9 +19,9 @@ const transporter = nodemailer.createTransport({
  * @param {String} text - message body
  * @return {Promise}
  */
-function sendEmail({ from, to, subject, text }) {
+function sendEmail({ from, to, subject, text, html }) {
   const options = {
-    from, to, subject, text
+    from, to, subject, text, html
   };
   return new Promise((resolve, reject) => {
     transporter.sendMail(options, (err, res) => {

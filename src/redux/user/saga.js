@@ -1,4 +1,4 @@
-import { select, all, takeEvery, take, put, fork, call } from 'redux-saga/effects';
+import { select, all, takeEvery, take, put, fork } from 'redux-saga/effects';
 //import { push } from 'react-router-redux';
 import firebaseHelper from '../../helpers/firebase';
 import actions from './actions';
@@ -21,6 +21,8 @@ export function* syncUser() {
           type: actions.SYNC_USER,
           user: val.data()
         });
+      } else if (err) {
+        console.log(err);
       }
     }
   });

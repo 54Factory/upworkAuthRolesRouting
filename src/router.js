@@ -69,6 +69,10 @@ const PublicRoutes = ({ history, isLoggedIn, role, loading }) => {
               path={'/password_reset'}
               component={asyncComponent(() => import('./containers/Page/passwordReset'))}
             />
+            <Route
+              path={'/invite'}
+              component={asyncComponent(() => import('./containers/Page/invite'))}
+            />
             <RestrictedRoute
               path="/admin"
               component={Admin}

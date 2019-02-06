@@ -6,5 +6,6 @@ import Admin from './admin/reducer';
 export default {
   Auth,
   App,
-  User
+  User,
+  Admin
 };

@@ -14,8 +14,7 @@ __snapshots__
 .DS_Store
 # sensitive data
 .env*
-
-key.json
+/functions/key.json
 
 npm-debug.log*
 yarn-debug.log*

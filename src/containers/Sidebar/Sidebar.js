@@ -112,7 +112,7 @@ class Sidebar extends Component {
     );
   };
   render() {
-    const { role } = this.props;
+    //const { role } = this.props;
     const { app, toggleOpenDrawer, height } = this.props;
     const collapsed = clone(app.collapsed) && !clone(app.openDrawer);
     const { openDrawer } = app;

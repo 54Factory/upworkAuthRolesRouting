@@ -11,7 +11,7 @@ const db = admin.firestore();
  * @param {Object} userRecord Contains the auth, uid and displayName info.
  * @param {Object} context Details about the event.
  */
-exports = module.exports = functions.auth.user().onDelete((userRecord, context) => {
+exports.default = functions.auth.user().onDelete((userRecord, context) => {
   let promises = [];
   // Create new user in Users collection
   const user = db.collection('Users')
