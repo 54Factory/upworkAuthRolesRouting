@@ -79,11 +79,11 @@ class Users extends Component {
 
     view !== 'MobileView' && columns.push({
       title: 'Name',
-      dataIndex: 'displayName',
-      key: 'displayName',
+      dataIndex: 'display_name',
+      key: 'display_name',
       width: '40%',
-      sorter: (a, b) => a.displayName.toLowerCase() > b.displayName.toLowerCase() ?-1 : 1,
-      sortOrder: sortedInfo.columnKey === 'displayName' && sortedInfo.order,
+      sorter: (a, b) => a.display_name.toLowerCase() > b.display_name.toLowerCase() ?-1 : 1,
+      sortOrder: sortedInfo.columnKey === 'display_name' && sortedInfo.order,
     });
 
     columns.push({

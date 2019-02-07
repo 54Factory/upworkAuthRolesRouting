@@ -6,8 +6,8 @@ import { connect } from 'react-redux';
 import { Spin } from 'antd';
 import styled from 'styled-components';
 
-import Admin from './containers/Admin';
 import asyncComponent from './helpers/AsyncFunc';
+import Admin from './containers/Admin';
 
 const LoadingOverlayStyle = styled.div`
   position: fixed;
@@ -74,9 +74,14 @@ const PublicRoutes = ({ history, isLoggedIn, role, loading }) => {
               component={asyncComponent(() => import('./containers/Page/invite'))}
             />
             <RestrictedRoute
-              path="/admin"
+              path={'/admin'}
               component={Admin}
               allowed={isLoggedIn && role === 'ADMIN'}
+            />
+            <RestrictedRoute
+              path={'/customer'}
+              component={asyncComponent(() => import('./containers/Customer'))}
+              allowed={isLoggedIn && role === 'CUSTOMER'}
             />
           </div>
         )}

@@ -25,7 +25,7 @@ class CreateUser extends Component {
    * @param {Object} values
    * @param {String} values.email
    * @param {String} values.role - 'DRIVER' or 'CUSTOMER'
-   * @param {String} values.displayName
+   * @param {String} values.display_name
    * @returns {Promse}
    */
   sendInvite() {
@@ -138,7 +138,7 @@ class CreateUser extends Component {
               {...formItemLayout}
               label="Name"
             >
-              {getFieldDecorator('displayName', {
+              {getFieldDecorator('display_name', {
                 rules: [{ required: true, message: 'Please enter a display name' }]
               })(
                 <Input
@@ -191,13 +191,13 @@ class CreateUser extends Component {
                 {...formItemLayout}
                 label="Phone"
               >
-                {getFieldDecorator('phoneNum', {
+                {getFieldDecorator('phone_number', {
                   rules: [{ required: true, message: 'Please enter a phone number'}],
                 })(
                   <Input
                     size="large"
                     addonBefore="+1"
-                    name="phoneNum" type="num"
+                    name="phone_number" type="num"
                     placeholder="1423453453"
                   />
                 )}

@@ -30,7 +30,7 @@ exports.default = functions.auth.user().onCreate((userRecord, context) => {
         role: 'ADMIN',
         created_on: new Date().getTime(),
         updated_on: new Date().getTime(),
-        displayName: userRecord.displayName,
+        display_name: userRecord.display_name,
         email: userRecord.email
       })
       .catch(console.error);

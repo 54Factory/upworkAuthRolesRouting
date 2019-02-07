@@ -4,8 +4,7 @@ import { push } from 'react-router-redux';
 import firebaseHelper from '../../helpers/firebase';
 import actions from './actions';
 import appActions from '../app/actions';
-import notification from '../../components/notification';
-
+import { message } from 'antd';
 
 /**
  * Login to firebase on LOGIN_REQUEST
@@ -59,7 +58,7 @@ export function* loginSuccess(action) {
     type: appActions.SET_LOADING,
     loading: false
   });
-  yield call(notification, 'success', 'Success', `Logged in as ${action.authUser.email}.`);
+  yield call(message.success, `Logged in as ${action.authUser.email}.`);
 }
 
 /**
@@ -69,7 +68,7 @@ export function* watchLoginError() {
   yield takeEvery(actions.LOGIN_ERROR, loginError);
 }
 export function* loginError(action) {
-  yield call(notification, 'error', 'Error', action.error);
+  yield call(message.error, action.error);
 }
 
 /**
@@ -83,7 +82,7 @@ export function* logout() {
   try {
     yield call(firebaseHelper.rsf.auth.signOut);
     yield put(push('/'));
-    yield call(notification, 'success', 'Success', 'Successfully Logged out.');
+    yield call(message.success, 'Successfully Logged out.');
   } catch (e) {
     // logout error
   }
@@ -160,7 +159,7 @@ export function* watchResetPasswordError() {
   yield takeEvery(actions.RESET_PASSWORD_ERROR, resetPasswordError);
 }
 export function* resetPasswordError(action) {
-  yield call(notification, 'error', 'Error', action.error);
+  yield call(message.error, action.error);
 }
 
 /**
@@ -170,7 +169,7 @@ export function* watchResetPasswordSuccess() {
   yield takeEvery(actions.RESET_PASSWORD_SUCCESS, resetPasswordSuccess);
 }
 export function* resetPasswordSuccess(action) {
-  yield call(notification, 'success', 'Success', `Password reset email sent to ${action.email}.`);
+  yield call(message.success, `Password reset email sent to ${action.email}.`);
   yield put(push('/signin'));
 }
 

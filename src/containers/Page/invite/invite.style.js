@@ -51,7 +51,7 @@ const InvitePageStyleWrapper = styled.div`
     .invite-page-title-wrapper {
       width: 100%;
       display: flex;
-      margin-bottom: 50px;
+      margin-bottom: 30px;
       justify-content: center;
       flex-shrink: 0;
 
@@ -137,6 +137,53 @@ const InvitePageStyleWrapper = styled.div`
       margin-bottom: 20px;
       > h3 {
         font-weight: 500;
+      }
+    }
+
+    .avatar-uploader {
+      > .ant-upload {
+        position: relative;
+        margin: 0 auto;
+        margin-bottom: 10px;
+        border-radius: 50%;
+        width: 128px;
+        height: 128px;
+        overflow: hidden;
+      }
+
+
+      .avatar-img {
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      .avatar-upload-progress {
+        position: absolute;
+        top: 3px; left: 0;
+        opacity: 0.7;
+        width: 128px;
+        height: 128px;
+      }
+
+      .avatar-upload-avatar {
+        position: absolute;
+        border-radius: 50%;
+        top: 0;
+        left: 0;
+        overflow: hidden;
+        opacity: 0.3;
+        > svg {
+          width: 128px;
+          height: 128px;
+          fill: #bbb;
+        }
+
+      }
+
+      .avatar-upload-button-text {
+
       }
     }
 

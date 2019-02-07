@@ -1,6 +1,6 @@
-const inviteHtml = ({ displayName, email, url }) => `
+const inviteHtml = ({ display_name, email, url }) => `
   <div>
-    <h1>Welcome, ${displayName}</h1>
+    <h1>Welcome, ${display_name}</h1>
 
     <div>You've been invited to create an account.</div>
 
@@ -11,8 +11,8 @@ const inviteHtml = ({ displayName, email, url }) => `
   </div>
 `;
 
-const inviteText = ({ displayName, email, url }) => `
-  Welcome, ${displayName}!
+const inviteText = ({ display_name, email, url }) => `
+  Welcome, ${display_name}!
   You've been invited to create an account.
 
   follow the link to complete you account creation.
@@ -21,8 +21,8 @@ const inviteText = ({ displayName, email, url }) => `
   email: ${email}
 `;
 
-exports = module.exports = ({ displayName, email, url }) => {
-  const html = inviteHtml({displayName, email, url});
-  const text = inviteText({displayName, email, url});
+exports = module.exports = ({ display_name, email, url }) => {
+  const html = inviteHtml({display_name, email, url});
+  const text = inviteText({display_name, email, url});
   return { html, text };
 }

@@ -58,12 +58,12 @@ describe('createUser tests', () => {
       const inviteTemplate = require('../email/templates/invite');
 
       const sendEmailStub = sinon.stub(mailer, 'sendEmail');
-      const displayName = 'Test Name';
+      const display_name = 'Test Name';
       const email = 'test@test.com';
       const id = 'TESTIDTESTID';
 
       const msg = inviteTemplate({
-        displayName, email,
+        display_name, email,
         url: `http://localhost:3000/create?v=${id}`
       });
 
@@ -77,7 +77,7 @@ describe('createUser tests', () => {
 
       sendEmailStub.withArgs(args).returns(true);
 
-      assert.isTrue(myFunctions.sendInvite(displayName, email, id));
+      assert.isTrue(myFunctions.sendInvite(display_name, email, id));
 
       assert(sendEmailStub.calledOnce);
     });

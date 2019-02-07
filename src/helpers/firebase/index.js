@@ -1,8 +1,11 @@
 import firebase from 'firebase';
 import ReduxSagaFirebase from 'redux-saga-firebase';
 import { buffers, eventChannel } from 'redux-saga';
+import uuidv1 from 'uuid/v1';
+
 import 'firebase/firestore';
 import 'firebase/functions';
+import 'firebase/storage';
 import { firebaseConfig } from '../../settings';
 
 const valid =
@@ -24,6 +27,10 @@ class FirebaseHelper {
 
     this.functions = this.isValid && firebase.functions();
     this.database = this.isValid && firebase.firestore();
+    this.storage = this.isValid && firebase.storage();
+    this.storageRef = this.storage.ref();
+    this.imageRef = this.storageRef.child('images');
+
     this.rsfAuth = firebaseAuth;
     this.rsf =
       this.isValid && new ReduxSagaFirebase(firebaseApp, firebase.firestore());
@@ -85,6 +92,33 @@ class FirebaseHelper {
         break;
     }
     return errorMessage;
+  }
+
+  uploadImage(file, metadata, onError, onProgress, onSuccess) {
+    // generate a unique id for the photo
+    const uuid = uuidv1();
+    const uploadTask = this.imageRef.child(uuid).put(file, metadata);
+    const userId = this.rsfAuth().currentUser.uid;
+
+    uploadTask.on('state_changed', snapshot => {
+      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      onProgress(progress);
+    }, err => {
+      onError(err);
+    }, () => {
+      // on success
+      uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
+        this.database.collection('Images').doc(uuid).set({
+          metadata,
+          owner: userId,
+          url: downloadURL
+        }).then(() => {
+          onSuccess(downloadURL, uuid);
+        }).catch(err => {
+          onError(err);
+        })
+      });
+    });
   }
 }
 

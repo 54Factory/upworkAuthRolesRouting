@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Spin, Button, Icon, Input, Steps, Form } from 'antd';
-import { push } from 'react-router-redux';
+import { message, Spin, Progress, Button, Icon, Input, Steps, Form, Upload } from 'antd';
 
 import Firebase from '../../../helpers/firebase';
 
@@ -24,6 +23,24 @@ function parseQueryString(query) {
   return vars;
 }
 
+function getBase64(img, callback) {
+  const reader = new FileReader();
+  reader.addEventListener('load', () => callback(reader.result));
+  reader.readAsDataURL(img);
+}
+
+function beforeUpload(file) {
+  const isJPG = file.type === 'image/jpeg';
+  const isPNG = file.type === 'image/png'
+  if (!isJPG && !isPNG) {
+    message.error('You can only a jpeg or png');
+  }
+  const isLt2M = file.size / 1024 / 1024 < 2;
+  if (!isLt2M) {
+    message.error('Image must smaller than 2MB!');
+  }
+  return (isPNG || isJPG) && isLt2M;
+}
 
 /**
  * A page for a user to accept an invite
@@ -83,6 +100,10 @@ class InvitePage extends Component {
           error: null
         }
       },
+      imageUrl: null,
+      imageLoading: false,
+      imageProgress: 0,
+      imageId: null,
       submitting: false,
       loading: true,
       id: null,
@@ -96,7 +117,6 @@ class InvitePage extends Component {
 
     if ('id' in urlParams) {
       this.setState({ id: urlParams.id });
-
 
       const cloudFunc = Firebase.functions.httpsCallable('httpRetreiveInvite');
       cloudFunc({ inviteId: urlParams.id })
@@ -113,7 +133,7 @@ class InvitePage extends Component {
                 ...this.state.form,
                 display_name: {
                   ...this.state.form.display_name,
-                  value: this.props.user.displayName || '',
+                  value: this.props.user.display_name || '',
                   touched: true
                 },
                 phone_number: {
@@ -142,32 +162,36 @@ class InvitePage extends Component {
   }
 
   submit() {
-    const { form } = this.state;
+    const { form, imageId, imageUrl } = this.state;
     const { uid } = this.props.authUser;
-    const { role } = this.props;
     this.setState({ submitting: true });
     Firebase.rsfAuth().currentUser
       .updatePassword(form.password.value)
       .then(() => {
-        Firebase.database.collection('Users').doc(uid).set({
-          displayName: form.display_name.value,
-          phoneNum: form.phone_number.value,
-          email_verified: true
+        Firebase.database.collection('Users').doc(uid).update({
+          display_name: form.display_name.value,
+          phone_number: form.phone_number.value,
+          email_verified: true,
+          profile_picture: {
+            id: imageId || null,
+            url: imageUrl || null
+          }
         }).then(() => {
           this.setState({
             submitting: false
           });
-          switch(role) {
+          console.log(this.props.role);
+          switch(this.props.role) {
             case 'ADMIN': {
-              push('/admin');
+              this.props.history.push('/admin');
               break;
             }
             case 'CUSTOMER': {
-              push('/customer');
+              this.props.history.push('/customer');
               break;
             }
             case 'DRIVER': {
-              push('/driver');
+              this.props.history.push('/driver');
               break;
             }
             default: break;
@@ -176,12 +200,6 @@ class InvitePage extends Component {
         })
       });
   }
-
-  //  componentDidUpdate() {
-  //    const { loading, step } = this.state;
-  //    if (!loading)
-  //      this[this.steps[step].inputs[0].name].focus();
-  //  }
 
   renderLoading() {
     return (
@@ -217,7 +235,10 @@ class InvitePage extends Component {
 
   renderSuccess() {
     const Step = Steps.Step;
-    const { step, form, submitting } = this.state;
+    const {
+      step, form, submitting,
+      imageUrl, imageLoading, imageProgress
+    } = this.state;
     const { view, user } = this.props;
 
     let currentFields = this.steps[step].inputs.map(it => (
@@ -251,6 +272,33 @@ class InvitePage extends Component {
     return (
       <div className="invite-page-success-wrapper">
         <div className="invite-page-success-email">
+          <Upload
+            name="avatar"
+            listType="picture-card"
+            className="avatar-uploader"
+            showUploadList={false}
+            customRequest={this.uploadImage}
+            beforeUpload={beforeUpload}
+            onChange={this.imageChange}
+          >
+            <div className="avatar-container">
+              { imageUrl && <img className="avatar-img" src={imageUrl} alt="avatar"/> }
+              { !imageUrl && !imageLoading && (
+                <div>
+                  <Icon type="plus"/>
+                  <Icon className="avatar-upload-avatar" type="user" />
+                  <div className="avatar-upload-button-text">Upload</div>
+                </div>
+              )}
+              { imageLoading && (
+                <Progress
+                  type="circle"
+                  percent={Math.floor(imageProgress)}
+                  className="avatar-upload-progress"
+                />
+              )}
+            </div>
+          </Upload>
           <h3>{user && `Welcome, ${user.email}`}</h3>
           <div>Complete this form to finish creating your account</div>
         </div>
@@ -308,7 +356,15 @@ class InvitePage extends Component {
     e.preventDefault();
     const { step } = this.state;
     if (step < this.steps.length - 1)
-      this.setState({ step: step + 1 });
+      this.setState({ step: step + 1 }, () => {
+        // auto focus next field
+        const focusTimer = setInterval(() => {
+          if (this[this.steps[this.state.step].inputs[0].name]) {
+            this[this.steps[this.state.step].inputs[0].name].focus();
+            clearInterval(focusTimer);
+          }
+        }, 50);
+      });
     else this.submit();
   }
 
@@ -316,7 +372,15 @@ class InvitePage extends Component {
     e.preventDefault();
     const { step } = this.state;
     if (step > 0)
-      this.setState({ step: step - 1 });
+      this.setState({ step: step - 1 }, () => {
+        // auto focus next field
+        const focusTimer = setInterval(() => {
+          if (this[this.steps[this.state.step].inputs[0].name]) {
+            this[this.steps[this.state.step].inputs[0].name].focus();
+            clearInterval(focusTimer);
+          }
+        }, 50);
+      });
   }
 
   onChange = e => {
@@ -358,6 +422,40 @@ class InvitePage extends Component {
       default: break;
     }
     this.setState({ form });
+  }
+
+  imageChange = info => {
+    if (info.file.status === 'uploading') {
+      this.setState({ imageLoading: true });
+      return;
+    }
+
+    if (info.file.status === 'done') {
+      // Get this url from response in real world.
+      getBase64(info.file.originFileObj, imageUrl => this.setState({
+        imageUrl
+      }));
+    }
+  }
+
+  uploadImage = ({ file, onProgress, onError, onSuccess }) => {
+    this.setState({ imageLoading: true });
+    const metadata = {
+      contentType: file.type,
+      name: file.name,
+      size: file.size
+    };
+
+    Firebase.uploadImage(file, metadata, err => {
+      this.setState({ imageLoading: false });
+      onError(err);
+    }, prog => {
+      this.setState({ imageProgress: prog });
+      onProgress(prog);
+    }, ({ url, uuid }) => {
+      onSuccess(url);
+      this.setState({ imageLoading: false, imageId: uuid });
+    });
   }
 
   render() {

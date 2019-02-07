@@ -55,7 +55,7 @@ class Topbar extends Component {
 
 export default connect(
   state => ({
-    ...state.App
+    ...state.App,
   }),
   { toggleCollapsed }
 )(Topbar);

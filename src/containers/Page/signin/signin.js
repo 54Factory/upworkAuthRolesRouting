@@ -52,6 +52,14 @@ class SignIn extends Component {
           this.props.history.push('/admin');
           break;
         }
+        case 'CUSTOMER': {
+          this.props.history.push('/customer');
+          break;
+        }
+        case 'DRIVER': {
+          this.props.history.push('/driver');
+          break;
+        }
         default: break;
       }
     }

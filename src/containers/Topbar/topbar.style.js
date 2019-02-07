@@ -161,6 +161,7 @@ const TopbarWrapper = styled.div`
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
             position: relative;
             background-color: ${palette("grayscale", 9)};
             ${borderRadius("50%")};
@@ -168,18 +169,6 @@ const TopbarWrapper = styled.div`
             img {
               height: 100%;
               object-fit: cover;
-            }
-
-            .userActivity {
-              width: 10px;
-              height: 10px;
-              display: block;
-              background-color: ${palette("color", 3)};
-              position: absolute;
-              bottom: 0;
-              right: 3px;
-              border: 1px solid #ffffff;
-              ${borderRadius("50%")};
             }
           }
         }

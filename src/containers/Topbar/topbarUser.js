@@ -25,6 +25,8 @@ class TopbarUser extends Component {
   }
 
   render() {
+    const profpic = (this.props.profpic && this.props.profpic.url) || userpic;
+
     const content = (
       <TopbarDropdownWrapper className="isoUserDropdown">
         <a className="isoDropdownLink" href="# ">
@@ -52,14 +54,15 @@ class TopbarUser extends Component {
         placement="bottomLeft"
       >
         <div className="isoImgWrapper">
-          <img alt="user" src={userpic} />
-          <span className="userActivity online" />
+          <img alt="user" src={profpic} />
         </div>
       </Popover>
     );
   }
 }
 export default connect(
-  null,
+  state => ({
+    profpic: state.User.user && state.User.user.profile_picture
+  }),
   { logout }
 )(TopbarUser);

@@ -35,7 +35,8 @@
     "redux-thunk": "^2.2.0",
     "smooth-scrollbar": "^8.2.5",
     "styled-components": "^2.2.1",
-    "styled-theme": "^0.3.3"
+    "styled-theme": "^0.3.3",
+    "uuid": "^3.3.2"
   },
   "scripts": {
     "start": "react-scripts start",

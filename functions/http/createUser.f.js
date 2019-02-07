@@ -28,9 +28,9 @@ function generatePassword() {
 }
 exports.generatePassword = generatePassword;
 
-function sendInvite(displayName, email, id) {
+function sendInvite(display_name, email, id) {
   const msg = inviteTemplate({
-    displayName, email,
+    display_name, email,
     url: `${functions.config().client.url}/invite?id=${id}`
   });
 
@@ -89,7 +89,7 @@ exports.removeOldLinks = removeOldLinks;
  */
 exports.default = functions.https.onCall((data, context) => {
   const email = data.email || null;
-  const displayName = data.displayName || null;
+  const display_name = data.display_name || null;
   const role = data.role || null;
 
   if (context.auth.token.role !== 'ADMIN')
@@ -116,7 +116,7 @@ exports.default = functions.https.onCall((data, context) => {
   // create user
   return admin.auth().createUser({
     email,
-    displayName,
+    displayName: display_name,
     password
   })
   .then(userRecord => {
@@ -129,12 +129,11 @@ exports.default = functions.https.onCall((data, context) => {
           updated_on: new Date().getTime(),
           profile_picture: null,
           email_verified: false,
-          completed_signup: false
         }, data));
     });
     // create setup link
     return createSetupLink(userRecord.uid, password)
-      .then(doc => sendInvite(displayName, email, doc.id));
+      .then(doc => sendInvite(display_name, email, doc.id));
   })
   .catch(err => {
     console.log(err);
@@ -145,7 +144,7 @@ exports.default = functions.https.onCall((data, context) => {
       .then(doc => doc.id)
       .then(id => removeOldLinks(id)
       .then(() => createSetupLink(id, password)))
-      .then(doc => sendInvite(displayName, email, doc.id))
+      .then(doc => sendInvite(display_name, email, doc.id))
       .catch(err => {
         throw err;
       });
