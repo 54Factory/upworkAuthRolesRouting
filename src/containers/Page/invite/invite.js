@@ -172,10 +172,7 @@ class InvitePage extends Component {
           display_name: form.display_name.value,
           phone_number: form.phone_number.value,
           email_verified: true,
-          profile_picture: {
-            id: imageId || null,
-            url: imageUrl || null
-          }
+          profile_picture: imageId
         }).then(() => {
           this.setState({
             submitting: false

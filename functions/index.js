@@ -4,10 +4,6 @@ try { admin.initializeApp(); } catch (e) { console.log(e); }
 
 const db = admin.firestore();
 
-db.settings({
-  timestampsInSnapshots: true
-});
-
 /**
  *   Loads all `.f.js` files
  *   Exports a cloud function matching the file name

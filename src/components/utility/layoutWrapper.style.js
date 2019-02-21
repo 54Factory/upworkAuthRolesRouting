@@ -10,8 +10,12 @@ const LayoutContentWrapper = styled.div`
     padding: 50px 20px;
   }
 
-  @media (max-width: 580px) {
+  @media only screen and (max-width: 580px) {
     padding: 15px;
+  }
+
+  @media only screen and (max-width: 400px) {
+    padding: 0;
   }
 `;
 

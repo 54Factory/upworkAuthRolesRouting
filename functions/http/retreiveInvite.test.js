@@ -27,9 +27,6 @@ describe('retrieveInvite tests', () => {
     try {
       admin.initializeApp();
       db = admin.firestore();
-      db.settings({
-        timestampsInSnapshots: true
-      });
     } catch (e) {/** do nothing */}
 
 

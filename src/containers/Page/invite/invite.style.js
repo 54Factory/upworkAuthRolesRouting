@@ -155,7 +155,7 @@ const InvitePageStyleWrapper = styled.div`
       .avatar-img {
         position: absolute;
         top: 0; left: 0;
-        width: 100%;
+        object-fit: cover;
         height: 100%;
       }
 

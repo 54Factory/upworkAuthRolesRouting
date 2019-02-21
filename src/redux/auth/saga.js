@@ -110,11 +110,13 @@ export function* syncAuthUser() {
     const { error, user } = yield take(channel);
     if (user) {
       const role = yield call(getRole, user);
+      const profile_picture = yield call(firebaseHelper.profilePic);
       // update redux state
       yield put({
         type: actions.LOGIN_SUCCESS,
         authUser: user,
-        role
+        role,
+        profile_picture
       });
     } else if (error) {
       yield put({

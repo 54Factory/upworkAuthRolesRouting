@@ -42,10 +42,13 @@ const AdminHolder = styled.div`
 
   .isoLayoutContent {
     width: 100%;
-    padding: 35px;
     background-color: #ffffff;
     border: 1px solid ${palette("border", 0)};
     height: 100%;
+    padding: 35px;
+    @media only screen and (max-width: 400px) {
+      padding: 20px;
+    }
   }
 
   .isomorphicLayout {

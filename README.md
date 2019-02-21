@@ -9,7 +9,8 @@
 
 **Configure email provider**
 
-- `firebase functions:config:set email.provider=Gmail`
+- `firebase functions:config:set email.host=smtp.somemail.host`
+- `firebase functions:config:set email.port=587`
 - `firebase functions:config:set email.auth.user=your_email`
 - `firebase functions:config:set email.auth.password=your_password`
 
@@ -23,6 +24,8 @@ Create a file called .env and paste this into it.
     REACT_APP_FIREBASE_DATABASE_URL=your_database_url
     REACT_APP_FIREBASE_API_KEY=your_api_key
     REACT_APP_FIREBASE_CLOUD_FUNCTIONS=your_cloud_function_url
+    REACT_APP_FIREBASE_STORAGE_BUCKET=your_gc_storage_bucket_url
+
 
 **Create admin user**
 
@@ -32,13 +35,3 @@ Login to firebase console and create a user with the email `admin@admin.co`
 
 `yarn start` or `npm run start`
 
-Database Graph
----
-https://mongo.tools/ed/project/5c3645b263d6f961f60e9787
-
-
-TODO
----
-- Copy user photo to photos document
-- Make user decide to be Driver or Customer on first login
-- Create Admin Page, Driver Page, Customer Page

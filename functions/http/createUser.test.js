@@ -35,9 +35,6 @@ describe('createUser tests', () => {
     try {
       admin.initializeApp();
       db = admin.firestore();
-      db.settings({
-        timestampsInSnapshots: true
-      });
     } catch (e) {/** do nothing */}
 
     myFunctions = require('./createUser.f.js');

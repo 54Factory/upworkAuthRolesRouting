@@ -4,6 +4,7 @@ const initState = {
   authUser: null,
   error: null,
   role: null,
+  profile_picture: null,
   resetError: null
 };
 
@@ -21,6 +22,7 @@ export default function authReducer(state = initState, action) {
         ...state,
         authUser: action.authUser,
         role: action.role,
+        profile_picture: action.profile_picture,
         error: null
       };
     case actions.LOGIN_ERROR:
@@ -28,7 +30,8 @@ export default function authReducer(state = initState, action) {
         ...state,
         error: action.error,
         role: null,
-        authUser: null
+        authUser: null,
+        profile_picture: null
       };
     case actions.LOGOUT:
       return initState;
