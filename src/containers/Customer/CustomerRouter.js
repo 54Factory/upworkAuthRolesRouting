@@ -3,7 +3,10 @@ import { Route } from 'react-router-dom';
 import asyncComponent from '../../helpers/AsyncFunc';
 
 const routes = [
-
+  {
+    path: 'settings',
+    component: asyncComponent(() => import('../settings'))
+  }
 ];
 
 class CustomerRouter extends Component {

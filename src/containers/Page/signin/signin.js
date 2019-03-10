@@ -8,6 +8,7 @@ import Button from '../../../components/uielements/button';
 import authAction from '../../../redux/auth/actions';
 import IntlMessages from '../../../components/utility/intlMessages';
 import SignInStyleWrapper from './signin.style';
+import { siteConfig } from '../../../settings';
 
 import { Input, Form, Icon } from 'antd';
 const FormItem = Form.Item;
@@ -136,9 +137,7 @@ class SignIn extends Component {
         <div className="isoLoginContentWrapper">
           <div className="isoLoginContent">
             <div className="isoLogoWrapper">
-              <Link to="/dashboard">
-                <IntlMessages id="page.signInTitle" />
-              </Link>
+              {siteConfig.siteName}
             </div>
 
             <Form className="isoSignInForm" onSubmit={e => this.handleLogin(e, 'email')}>

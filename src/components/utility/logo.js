@@ -8,14 +8,12 @@ export default ({ collapsed }) => {
       {collapsed ? (
         <div>
           <h3>
-            <Link to="/dashboard">
-              <i className={siteConfig.siteIcon} />
-            </Link>
+            <i className={siteConfig.siteIcon} />
           </h3>
         </div>
       ) : (
         <h3>
-          <Link to="/dashboard">{siteConfig.siteName}</Link>
+          {siteConfig.siteName}
         </h3>
       )}
     </div>

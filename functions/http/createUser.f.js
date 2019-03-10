@@ -1,12 +1,11 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 
+try { admin.initializeApp() } catch (e) {}
+
+const tools = require('../helper_functions');
 const mailer = require('../email');
 const inviteTemplate = require('../email/templates/invite');
-
-// try { admin.initializeApp() } catch (e) { console.log(e) }
-
-const db = admin.firestore();
 
 const roles = [
   'ADMIN',
@@ -28,6 +27,15 @@ function generatePassword() {
 }
 exports.generatePassword = generatePassword;
 
+
+
+/**
+ * Sends an invite email with the link to signup
+ * @param {String} display_name
+ * @param {String} email - email to send to
+ * @param {uid} id - setup link id
+ * @returns {Promise} nodemailer send mail promise
+ */
 function sendInvite(display_name, email, id) {
   const msg = inviteTemplate({
     display_name, email,
@@ -47,10 +55,12 @@ function sendInvite(display_name, email, id) {
 exports.sendInvite = sendInvite;
 
 /**
+ * @param {String} id - user id
+ * @param {String} password - randomly generated password
  * @returns {firestore document}
  */
 function createSetupLink(id, password) {
-  return db.collection('SetupLinks')
+  return admin.firestore().collection('SetupLinks')
     .add({
       uid: id,
       created_on: new Date().getTime(),
@@ -58,7 +68,14 @@ function createSetupLink(id, password) {
       temp_password: password, // fine because only admin can directly access this
       valid: true
     })
-    .then(ref => ref.get());
+    .then(ref => ref.get())
+    .catch(err => {
+      tools.logError('createUser', err);
+      throw new functions.HttpsError(
+        'internal',
+        err.message
+      );
+    });
 }
 exports.createSetupLink = createSetupLink;
 
@@ -68,17 +85,21 @@ exports.createSetupLink = createSetupLink;
  */
 function removeOldLinks(id) {
   let promises = [];
-  return db.collection('SetupLinks')
+  return admin.firestore().collection('SetupLinks')
     .where('uid', '==', id)
     .get()
     .then(snap => snap.forEach(doc => {
       promises.push(
-        db.collection('SetupLinks').doc(doc.id).delete()
+        admin.firestore().collection('SetupLinks').doc(doc.id).delete()
       );
     }))
     .then(() => Promise.all(promises))
     .catch(err => {
-      throw err;
+      tools.logError('createUser', err);
+      throw new functions.HttpsError(
+        'internal',
+        err.message
+      );
     });
 }
 exports.removeOldLinks = removeOldLinks;
@@ -122,7 +143,7 @@ exports.default = functions.https.onCall((data, context) => {
   .then(userRecord => {
     // set custom claims
     admin.auth().setCustomUserClaims(userRecord.uid, { role }).then(() => {
-      db.collection('Users')
+      admin.firestore().collection('Users')
         .doc(userRecord.uid)
         .set(Object.assign({
           created_on: new Date().getTime(),
@@ -136,9 +157,8 @@ exports.default = functions.https.onCall((data, context) => {
       .then(doc => sendInvite(display_name, email, doc.id));
   })
   .catch(err => {
-    console.log(err);
     // Most likely user already exists error
-    return db.collection('Users').where('email', '==', email)
+    return admin.firestore().collection('Users').where('email', '==', email)
       .get()
       .then(snap => snap.docs[0])
       .then(doc => doc.id)
@@ -146,7 +166,11 @@ exports.default = functions.https.onCall((data, context) => {
       .then(() => createSetupLink(id, password)))
       .then(doc => sendInvite(display_name, email, doc.id))
       .catch(err => {
-        throw err;
+        tools.logError('createUser', err);
+        throw new functions.https.HttpsError(
+          'internal',
+          err.message
+        );
       });
   });
 });

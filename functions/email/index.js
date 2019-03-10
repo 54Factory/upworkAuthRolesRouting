@@ -1,16 +1,14 @@
-const nodemailer = require('nodemailer');
 const functions = require('firebase-functions');
+const admin = require('firebase-admin');
+try { admin.initializeApp() } catch (e) {}
 
 const config = functions.config();
 
-const transporter = nodemailer.createTransport({
-  host: config.email.host,
-  port: config.email.port,
-  auth: {
-    user: config.email.auth.user,
-    pass: config.email.auth.pass
-  }
-});
+// Require:
+const postmark = require("postmark");
+
+// Send an email:
+const client = new postmark.ServerClient(config.email.apikey);
 
 /**
  * Sends an Email
@@ -20,16 +18,16 @@ const transporter = nodemailer.createTransport({
  * @param {String} text - message body
  * @return {Promise}
  */
-function sendEmail({ from, to, subject, text, html }) {
+function sendEmail({ to, subject, text, html }) {
   const options = {
-    from, to, subject, text, html
+    From: config.email.auth.user,
+    To: to,
+    Subject: subject,
+    TextBody: text,
+    HtmlBody: html
   };
-  return new Promise((resolve, reject) => {
-    transporter.sendMail(options, (err, res) => {
-      if (err) reject(err);
-      resolve(res);
-    });
-  });
+
+  return client.sendEmail(options);
 }
 
 exports = module.exports = {

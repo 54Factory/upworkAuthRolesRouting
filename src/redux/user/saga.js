@@ -1,6 +1,6 @@
 import { select, all, takeEvery, take, put, fork } from 'redux-saga/effects';
 //import { push } from 'react-router-redux';
-import firebaseHelper from '../../helpers/firebase';
+import Firebase from '../../helpers/firebase';
 import actions from './actions';
 import authActions from '../auth/actions';
 
@@ -12,7 +12,8 @@ import authActions from '../auth/actions';
 export function* syncUser() {
   yield takeEvery(authActions.LOGIN_SUCCESS, function*() {
     const authState = yield select(state => state.Auth);
-    const channel = firebaseHelper.channel(`Users/${authState.authUser.uid}`, 'document');
+    // create channel to listen for user changes
+    const channel = Firebase.channel(`Users/${authState.authUser.uid}`, 'document');
     while (true) {
       const { val, err } = yield take(channel);
       if (val && val.data()) {
@@ -27,23 +28,6 @@ export function* syncUser() {
     }
   });
 }
-
-//export function* syncRoles() {
-//  yield takeLatest(authActions.LOGIN_SUCCESS, function*() {
-//    const uid = yield select(state => state.Auth.authUser.uid);
-//    const channel = firebaseHelper.channel(`Roles/${uid}`, 'document');
-//    while (true) {
-//      const { val, err } = yield take(channel);
-//      if (val && val.data()) {
-//        yield put({
-//          type: actions.SYNC_ROLES,
-//          hasDeclaredRole: val.data().role,
-//          role: val.data().role
-//        });
-//      }
-//    }
-//  });
-//}
 
 /**
  * Listens for LOGOUT and removes user and roles
@@ -60,7 +44,6 @@ export function* clearUser() {
 export default function* rootSaga() {
   yield all([
     fork(syncUser),
-    //    fork(syncRoles),
     fork(clearUser)
   ]);
 }

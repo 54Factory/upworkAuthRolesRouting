@@ -5,6 +5,7 @@ import IntlMessages from '../../components/utility/intlMessages';
 import userpic from '../../image/user1.png';
 import authAction from '../../redux/auth/actions';
 import TopbarDropdownWrapper from './topbarDropdown.style';
+import { Link } from 'react-router-dom';
 
 const { logout } = authAction;
 
@@ -26,19 +27,26 @@ class TopbarUser extends Component {
 
   render() {
     const profpic = (this.props.profpic && this.props.profpic.url) || userpic;
+    let settingsRoute;
+    switch(this.props.role) {
+      case 'ADMIN':
+        settingsRoute = '/admin/settings';
+        break;
+      case 'DRIVER':
+        settingsRoute = '/driver/settings';
+        break;
+      case 'CUSTOMER':
+        settingsRoute = '/customer/settings';
+        break;
+      default: break;
+    }
 
     const content = (
       <TopbarDropdownWrapper className="isoUserDropdown">
-        <a className="isoDropdownLink" href="# ">
+        <Link className="isoDropdownLink" to={settingsRoute}>
           <IntlMessages id="themeSwitcher.settings" />
-        </a>
-        <a className="isoDropdownLink" href="# ">
-          <IntlMessages id="sidebar.feedback" />
-        </a>
-        <a className="isoDropdownLink" href="# ">
-          <IntlMessages id="topbar.help" />
-        </a>
-        <a className="isoDropdownLink" onClick={this.props.logout} href="# ">
+        </Link>
+        <a className="isoDropdownLink" onClick={this.props.logout} href="#">
           <IntlMessages id="topbar.logout" />
         </a>
       </TopbarDropdownWrapper>
@@ -62,7 +70,8 @@ class TopbarUser extends Component {
 }
 export default connect(
   state => ({
-    profpic: state.User.user && state.User.user.profile_picture
+    profpic: state.User.user && state.User.user.profile_picture,
+    role: state.Auth.role
   }),
   { logout }
 )(TopbarUser);

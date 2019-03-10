@@ -21,5 +21,9 @@ service cloud.firestore {
       allow read: if isSignedIn() && request.auth.uid == get(/databases/$(database)/documents/Images/$(imageId)).owner
       allow write: if isSignedIn()
     }
+
+    match /Logs/{logId} {
+      allow read, write: if isSignedIn() && isAdmin()
+    }
   }
 }

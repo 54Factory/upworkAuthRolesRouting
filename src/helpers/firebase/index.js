@@ -24,7 +24,6 @@ class FirebaseHelper {
     // bind methods
     this.handleAuthError = this.handleAuthError.bind(this);
     this.channel = this.channel.bind(this);
-    this.profilePic = this.profilePic.bind(this);
 
     this.functions = this.isValid && firebase.functions();
     this.database = this.isValid && firebase.firestore();
@@ -92,16 +91,6 @@ class FirebaseHelper {
         break;
     }
     return errorMessage;
-  }
-
-  profilePic() {
-    const imageId = this.rsfAuth().currentUser.profile_picture;
-    if (!imageId) return;
-    return this.database.collection('Images').doc(imageId).get()
-      .then(doc => {
-        if (!doc.exists) return;
-        else return doc.data();
-      });
   }
 
   uploadImage(file, metadata, onError, onProgress, onSuccess) {

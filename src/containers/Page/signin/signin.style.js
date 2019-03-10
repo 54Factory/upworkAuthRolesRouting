@@ -55,13 +55,11 @@ const SignInStyleWrapper = styled.div`
       justify-content: center;
       flex-shrink: 0;
 
-      a {
-        font-size: 24px;
-        font-weight: 300;
-        line-height: 1;
-        text-transform: uppercase;
-        color: ${palette("secondary", 2)};
-      }
+      font-size: 24px;
+      font-weight: 300;
+      line-height: 1;
+      text-transform: uppercase;
+      color: ${palette("secondary", 2)};
     }
 
     .isoSignInForm {

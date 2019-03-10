@@ -2501,6 +2501,12 @@ posix-character-classes@^0.1.0:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/posix-character-classes/-/posix-character-classes-0.1.1.tgz#01eac0fe3b5af71a2a6c02feabb8c1fef7e00eab"
 
+postmark@^2.2.4:
+  version "2.2.4"
+  resolved "https://registry.yarnpkg.com/postmark/-/postmark-2.2.4.tgz#30a9ef57f738009bae14aa22f2f62e497b6f4a08"
+  dependencies:
+    request "^2.88.0"
+
 power-assert-context-formatter@^1.0.7:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/power-assert-context-formatter/-/power-assert-context-formatter-1.2.0.tgz#8fbe72692288ec5a7203cdf215c8b838a6061d2a"
@@ -2760,7 +2766,7 @@ repeat-string@^1.6.1:
   version "1.6.1"
   resolved "https://registry.yarnpkg.com/repeat-string/-/repeat-string-1.6.1.tgz#8dcae470e1c88abc2d600fff4a776286da75e637"
 
-request@^2.79.0, request@^2.81.0, request@^2.85.0, request@^2.87.0:
+request@^2.79.0, request@^2.81.0, request@^2.85.0, request@^2.87.0, request@^2.88.0:
   version "2.88.0"
   resolved "https://registry.yarnpkg.com/request/-/request-2.88.0.tgz#9c2fca4f7d35b592efe57c7f0a55e81052124fef"
   dependencies:

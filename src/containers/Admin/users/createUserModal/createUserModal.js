@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Icon, Form, Button, Radio, Select, Input, Modal } from 'antd';
-import Firebase from '../../helpers/firebase';
-import notification from '../notification';
+import notification from '../../../components/notification';
+import Firebase from '../../../helpers/firebase';
 
-import CreateUserWrapper from './createUser.style';
+import CreateUserWrapper from './createUserModal.style';
 
 //function hasErrors(fieldsError) {
 //  return Object.keys(fieldsError).some(field => fieldsError[field]);
@@ -49,13 +49,15 @@ class CreateUser extends Component {
     e.preventDefault();
     this.setState({ loading: true });
     this.sendInvite().then(data => {
-      this.props.setVisibility(false);
       this.setState({ loading: false });
-      notification('success', 'Invite Sent', 'A user was successfully created');
+      notification('success', 'Invite sent', 'A user was successfully created');
     }).catch(err => {
       this.setState({ loading: false });
       console.log('error');
-    });
+      notification('error', 'Invite not sent', err.message);
+    }).finally(() => {
+      this.props.setVisibility(false);
+    })
   }
 
   handleCancel() {

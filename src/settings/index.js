@@ -3,9 +3,9 @@ export default {
 };
 
 const siteConfig = {
-  siteName: 'ISOMORPHIC',
-  siteIcon: 'ion-flash',
-  footerText: 'Isomorphic ©2018 Created by RedQ, Inc',
+  siteName: 'EDEN GREEN',
+  siteIcon: 'ion-leaf',
+  footerText: 'Eden Green Energy'
 };
 const themeConfig = {
   topbar: 'themedefault',

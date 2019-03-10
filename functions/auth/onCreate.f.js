@@ -1,9 +1,9 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 
-// try { admin.initializeApp(); } catch (e) { console.log(e); }
+const tools = require('../helper_functions');
 
-const db = admin.firestore();
+try { admin.initializeApp(); } catch (e) { console.log(); }
 
 /**
  * Creates a document with ID -> uid in the `Users` collection.
@@ -24,7 +24,7 @@ exports.default = functions.auth.user().onCreate((userRecord, context) => {
     promises.push(newAdmin);
 
     // Create new user in Users collection
-    const user = db.collection('Users')
+    const user = admin.firestore().collection('Users')
       .doc(userRecord.uid)
       .set({
         role: 'ADMIN',
@@ -33,7 +33,10 @@ exports.default = functions.auth.user().onCreate((userRecord, context) => {
         display_name: userRecord.display_name,
         email: userRecord.email
       })
-      .catch(console.error);
+      .catch(err => {
+        tools.logError('authOnCreate', err);
+        console.log(err);
+      });
 
     promises.push(user);
   }

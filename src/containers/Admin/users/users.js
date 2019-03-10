@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { Button, Table, Icon, Tag } from 'antd';
 import { connect } from 'react-redux';
-import LayoutContentWrapper from '../../components/utility/layoutWrapper';
-import LayoutContent from '../../components/utility/layoutContent';
+import LayoutContentWrapper from '../../../components/utility/layoutWrapper';
+import LayoutContent from '../../../components/utility/layoutContent';
 //import notification from '../../components/notification';
 
 import UsersStyleWrapper from './users.style';
-import Firebase from '../../helpers/firebase';
-import CreateUserModal from '../../components/createUser';
+import Firebase from '../../../helpers/firebase';
+import CreateUserModal from './createUserModal';
 
 class Users extends Component {
   state = {

@@ -19,5 +19,4 @@ export default styled.div`
       border-radius: 4px;
     }
   }
-
 `;

@@ -162,7 +162,7 @@ class InvitePage extends Component {
   }
 
   submit() {
-    const { form, imageId, imageUrl } = this.state;
+    const { form, imageId } = this.state;
     const { uid } = this.props.authUser;
     this.setState({ submitting: true });
     Firebase.rsfAuth().currentUser
@@ -464,11 +464,9 @@ class InvitePage extends Component {
             <div className="invite-page-title-wrapper">
               <h1> Create Account </h1>
             </div>
-
             { loading && this.renderLoading() }
             { !loading && error && this.renderError() }
             { !loading && success && this.renderSuccess() }
-
           </div>
         </div>
       </InvitePageStyleWrapper>

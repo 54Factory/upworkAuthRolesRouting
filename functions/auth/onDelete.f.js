@@ -1,9 +1,9 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 
-// try { admin.initializeApp(); } catch (e) { console.log(e); }
+const tools = require('../helper_functions');
 
-const db = admin.firestore();
+try { admin.initializeApp(); } catch (e) { console.log(e); }
 
 /**
  * Creates a document with ID -> uid in the `Users` collection.
@@ -12,14 +12,14 @@ const db = admin.firestore();
  * @param {Object} context Details about the event.
  */
 exports.default = functions.auth.user().onDelete((userRecord, context) => {
-  let promises = [];
   // Create new user in Users collection
-  const user = db.collection('Users')
+  const user = admin.firestore().collection('Users')
     .doc(userRecord.uid)
     .delete()
-    .catch(console.error);
+    .catch(err => {
+      tools.logError('authOnDelete', err);
+      console.log(err);
+    });
 
-  promises.push(user);
-
-  return Promise.all(promises);
+  return user;
 });

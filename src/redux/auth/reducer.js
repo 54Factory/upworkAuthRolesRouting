@@ -22,7 +22,6 @@ export default function authReducer(state = initState, action) {
         ...state,
         authUser: action.authUser,
         role: action.role,
-        profile_picture: action.profile_picture,
         error: null
       };
     case actions.LOGIN_ERROR:

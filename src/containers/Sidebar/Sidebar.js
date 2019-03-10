@@ -163,7 +163,7 @@ class Sidebar extends Component {
               selectedKeys={app.current}
               onOpenChange={this.onOpenChange}
             >
-              {options.filter(option => option.role === this.props.role).map(singleOption =>
+              {options.filter(option => option.role === '*' || option.role === this.props.role).map(singleOption =>
                 this.getMenuItem({ submenuStyle, submenuColor, singleOption })
               )}
             </Menu>

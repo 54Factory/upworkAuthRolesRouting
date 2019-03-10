@@ -38,16 +38,14 @@ const SidebarWrapper = styled.div`
       ${borderRadius()};
 
       h3 {
-        a {
-          font-size: 21px;
-          font-weight: 300;
-          line-height: 70px;
-          letter-spacing: 3px;
-          text-transform: uppercase;
-          color: ${palette('grayscale', 6)};
-          display: block;
-          text-decoration: none;
-        }
+        font-size: 21px;
+        font-weight: 300;
+        line-height: 70px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: ${palette('grayscale', 6)};
+        display: block;
+        text-decoration: none;
       }
     }
 
@@ -56,11 +54,9 @@ const SidebarWrapper = styled.div`
         padding: 0;
 
         h3 {
-          a {
-            font-size: 27px;
-            font-weight: 500;
-            letter-spacing: 0;
-          }
+          font-size: 27px;
+          font-weight: 500;
+          letter-spacing: 0;
         }
       }
     }

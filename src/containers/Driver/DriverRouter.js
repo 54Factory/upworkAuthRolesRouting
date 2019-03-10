@@ -4,28 +4,12 @@ import asyncComponent from '../../helpers/AsyncFunc';
 
 const routes = [
   {
-    path: '',
-    component: asyncComponent(() => import('../dashboard')),
-  },
-  {
-    path: 'users',
-    component: asyncComponent(() => import('../users'))
-  },
-  {
-    path: 'logs',
-    component: asyncComponent(() => import('../logs'))
-  },
-  {
     path: 'settings',
     component: asyncComponent(() => import('../settings'))
-  },
-  {
-    path: 'locations',
-    component: asyncComponent(() => import('../locations'))
   }
 ];
 
-class AdminRouter extends Component {
+class DriverRouter extends Component {
   render() {
     const { url, style } = this.props;
     return (
@@ -46,4 +30,4 @@ class AdminRouter extends Component {
   }
 }
 
-export default AdminRouter;
+export default DriverRouter;

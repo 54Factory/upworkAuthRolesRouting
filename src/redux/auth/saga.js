@@ -25,14 +25,6 @@ export function* loginRequest(action) {
 
         yield call(method, credential);
         break;
-        //      case 'google':
-        //        credential = firebaseHelper.rsfAuth.GoogleAuthProvider.credential;
-        //        yield call(method, credential);
-        //        break;
-        //      case 'facebook':
-        //        credential = firebaseHelper.rsfAuth.FacebookAuthProvider.credential;
-        //        yield call(method, credential);
-        //        break;
       default: break;
     }
     // successful login will trigger the syncUser, which will update the state
@@ -110,13 +102,11 @@ export function* syncAuthUser() {
     const { error, user } = yield take(channel);
     if (user) {
       const role = yield call(getRole, user);
-      const profile_picture = yield call(firebaseHelper.profilePic);
       // update redux state
       yield put({
         type: actions.LOGIN_SUCCESS,
         authUser: user,
         role,
-        profile_picture
       });
     } else if (error) {
       yield put({
