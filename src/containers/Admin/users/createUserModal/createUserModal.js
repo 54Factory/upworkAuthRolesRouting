@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Icon, Form, Button, Radio, Select, Input, Modal } from 'antd';
-import notification from '../../../components/notification';
-import Firebase from '../../../helpers/firebase';
+import notification from '../../../../components/notification';
+import Firebase from '../../../../helpers/firebase';
 
 import CreateUserWrapper from './createUserModal.style';
 

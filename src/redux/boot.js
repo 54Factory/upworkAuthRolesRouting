@@ -5,6 +5,8 @@ import appActions from './app/actions';
 
 export default () =>
   new Promise(() => {
+    // if user does not have token in localstorage
+    // stop loading and send them to login page
     if (window && !window.localStorage.getItem('loggedIn')) {
       store.dispatch(appActions.setLoading(false, null));
     }

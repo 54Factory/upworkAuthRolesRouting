@@ -6,11 +6,36 @@ const options = [
     role: 'ADMIN'
   },
   {
-    key: 'locations',
-    label: 'Locations',
-    leftIcon: 'ion-compass',
+    key: 'customers',
+    label: 'Customers',
+    leftIcon: 'ion-cash',
     role: 'ADMIN'
   },
+  {
+    key: 'locations',
+    label: 'Locations',
+    leftIcon: 'ion-android-pin',
+    role: 'ADMIN'
+  },
+  {
+    key: 'pickups',
+    label: 'Pickups',
+    leftIcon: 'ion-clipboard',
+    role: 'ADMIN'
+  },
+  {
+    key: 'drivers',
+    label: 'Drivers',
+    leftIcon: 'ion-android-people',
+    role: 'ADMIN'
+  },
+  {
+    key: 'trucks',
+    label: 'Trucks',
+    leftIcon: 'ion-android-car',
+    role: 'ADMIN'
+  },
+
   {
     key: 'logs',
     label: 'Logs',

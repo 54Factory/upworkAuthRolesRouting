@@ -9,20 +9,36 @@ const routes = [
   },
   {
     path: 'users',
-    component: asyncComponent(() => import('../users'))
+    component: asyncComponent(() => import('./Users'))
   },
   {
+    path: 'customers',
+    component: asyncComponent(() => import('./Customers'))
+  },
+  { path: 'pickups',
+    component: asyncComponent(() => import('./Pickups'))
+  },
+  {
+    path: 'locations',
+    component: asyncComponent(() => import('./Locations'))
+  },
+  {
+    path: 'drivers',
+    component: asyncComponent(() => import('./Drivers'))
+  },
+  {
+    path: 'trucks',
+    component: asyncComponent(() => import('./Trucks'))
+  },
+
+  {
     path: 'logs',
-    component: asyncComponent(() => import('../logs'))
+    component: asyncComponent(() => import('./Logs'))
   },
   {
     path: 'settings',
     component: asyncComponent(() => import('../settings'))
   },
-  {
-    path: 'locations',
-    component: asyncComponent(() => import('../locations'))
-  }
 ];
 
 class AdminRouter extends Component {

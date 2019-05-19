@@ -1,0 +1,129 @@
+https://mongo.tools/ed/project/5c3645b263d6f961f60e9787
+
+ADMIN DASHBOARD
+
+/admin
+  - /users
+    - /add
+
+  - /trucks
+    - /add
+    - /{truckId}
+      - /edit
+      - /remove
+
+  - /drivers
+    - /{driverId}
+
+  - /pickups
+    - /add
+    - /{pickupId}
+      - /edit
+      - /delete
+
+  - /customers
+    - /{customerId}
+      - /delete
+      - /edit
+    - /add
+
+  - /locations
+    - /add
+    - /{locationId}
+      - /edit
+      - /delete
+
+
+ - Users page '/admin/users'
+   - list users and role
+   - remove user
+
+ - Trucks Page '/admin/trucks'
+   - list of trucks
+     + view currently assigned drivers, current volume, total capacity
+   + add new truck (modal)
+
+   - truck detail view '/admin/trucks/{truckId}'
+     + change driver assignment ? (should also change drivers truck assignment?)
+     + remove truck
+     + change capacity / volume
+
+ - Drivers Page '/admin/drivers'
+   - list of drivers
+     + view currently assigned truck
+   + add new driver
+
+   - Driver Detail view '/admin/drivers/{driverId}'
+     + change truck assignment  ? (should also change trucks driver assignment?)
+
+ - Pickups Page '/admin/pickups'
+   - list all pickups
+   - list pending (incomplete pickups)
+   + create one-time pickup
+   - Pickup Detail view '/admin/pickups/{pickupId}'
+     - view all pickup details
+     - Link to location
+
+
+ - Customers Page '/admin/customers'
+   + add customer
+   - Customer Detail view '/admin/customers/{customerId}'
+    - view customer details (owned locations, ect.)
+     - edit customer details
+     - link to locations
+     - remove customers
+
+ - Locations Page '/admin/locations'
+   - LocationsList
+     + search through locations
+   - Locations Detail View '/admin/location/{locationId}'
+     + view location details
+     + edit location details
+     + remove location
+     + view pickup history for that location
+
+
+Generating pickups
+ + create daily cronjob to loop through locations and generate new 'pending' pickup
+   for each location where nextPickupOn equals the current date.
+ + Create a daily cronjob to loop through locations and generate new pickups 5 days in advance (As opposed to the day of). 
+   This is because, we want to be able to see pickups that are upcoming.
+
+DRIVER DASHBOARD
+  - view current truck
+  - view list of pending pickups
+  - view map of pending pickups
+
+TODO:
+  - fix image upload, remove thumbnail uploader
+  - get profile picture on user load
+  - change signup flow to only include ADMIN, DRIVER
+
+  - create cron job cloud function to create new pending pickups
+
+  - settings page
+    - edit basic user data
+    - profile picture upload
+
+  - customers page
+    - create customer modal
+    - customers list view
+    - customer detail page
+
+  - Locations page
+    - create react components for location-page,
+    - create react components for /locations/add and /locations/{locationId}
+    - First build these using dummy data
+  - Pickups page
+    - create react components for pickups-page, /pickups/add, /pickups/{pickupId}
+    - Using dummy data
+
+  - Index Collections for Algolia Search,
+    create Index on Collection update, create, and delete
+
+  - Create functions to get location data and pickups data into redux state,
+    basically "wiring up" locations and pickups page
+
+  - Integrate locations/add with google places
+
+  - Integrate frontend locations with algolia so it's search able

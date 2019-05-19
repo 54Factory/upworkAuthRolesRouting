@@ -1,8 +1,9 @@
-import firebase from 'firebase';
+import firebase from 'firebase/app';
 import ReduxSagaFirebase from 'redux-saga-firebase';
 import { buffers, eventChannel } from 'redux-saga';
 import uuidv1 from 'uuid/v1';
 
+import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/functions';
 import 'firebase/storage';
@@ -24,6 +25,8 @@ class FirebaseHelper {
     // bind methods
     this.handleAuthError = this.handleAuthError.bind(this);
     this.channel = this.channel.bind(this);
+
+    this.createCustomer = this.createCustomer.bind(this);
 
     this.functions = this.isValid && firebase.functions();
     this.database = this.isValid && firebase.firestore();
@@ -119,6 +122,22 @@ class FirebaseHelper {
         })
       });
     });
+  }
+
+  /**
+   * Creates a new customer document in firestore
+   * currently does not link to userId
+   * or, to locations, that is done later
+   * @param {String} name - name of customer
+   * @returns {Promise}
+   */
+  createCustomer({ name }) {
+    //const newCustomer = {
+    //  name, // name of customer
+    //  createdOn: new Date(), // current date
+    //  active: true // default true
+    //};
+
   }
 }
 

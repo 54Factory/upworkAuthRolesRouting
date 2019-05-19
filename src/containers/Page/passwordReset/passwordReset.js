@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { Input, Form, Icon } from 'antd';
 import Button from '../../../components/uielements/button';
 
-import IntlMessages from '../../../components/utility/intlMessages';
+//import IntlMessages from '../../../components/utility/intlMessages';
 import authAction from '../../../redux/auth/actions';
 import PasswordResetStyleWrapper from './passwordReset.style';
 
@@ -52,12 +52,12 @@ class PasswordReset extends Component {
           <div className="passwordResetContent">
             <div className="logoWrapper">
               <Link to="/dashboard">
-                <IntlMessages id="page.signInTitle" />
+                Home
               </Link>
             </div>
 
             <p className="passwordResetInstructions">
-              <IntlMessages id="page.passwordResetInstruction"/>
+              Password reset instructions.
             </p>
 
             <Form className="passwordResetForm" onSubmit={this.handleSubmit}>
@@ -78,13 +78,13 @@ class PasswordReset extends Component {
 
               <FormItem className="submitButton">
                 <Button block type="primary" htmlType="submit">
-                  <IntlMessages id="page.passwordResetButton"/>
+                  Reset Password
                 </Button>
               </FormItem>
 
               <div className="isoCenterComponent isoHelperWrapper">
                 <Link to="/signup">
-                  <IntlMessages id="page.passwordResetLinkBack" />
+                  Signup
                 </Link>
               </div>
             </Form>

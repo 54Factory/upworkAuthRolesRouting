@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import Checkbox from '../../../components/uielements/checkbox';
 import Button from '../../../components/uielements/button';
 import authAction from '../../../redux/auth/actions';
-import IntlMessages from '../../../components/utility/intlMessages';
+//import IntlMessages from '../../../components/utility/intlMessages';
 import SignInStyleWrapper from './signin.style';
 import { siteConfig } from '../../../settings';
 
@@ -173,16 +173,16 @@ class SignIn extends Component {
 
               <div className="isoLeftRightComponent">
                 <Checkbox>
-                  <IntlMessages id="page.signInRememberMe" />
+                  Remember me
                 </Checkbox>
                 <Link to="/password_reset" className="isoForgotPass">
-                  <IntlMessages id="page.signInForgotPass" />
+                  Forgot password?
                 </Link>
               </div>
 
               <FormItem className="isoSignInButton">
                 <Button block type="primary" htmlType="submit">
-                  <IntlMessages id="page.signInButton" />
+                  Login
                 </Button>
               </FormItem>
 

@@ -1,25 +1,29 @@
 service cloud.firestore {
   match /databases/{database}/documents {
-    // gets roles for the user with that userId
+
     function isSignedIn() {
       return request.auth != null;
     }
 
-    function isAdmin() {
-      return request.auth.token.role == 'ADMIN'
+    function hasRole(role) {
+      return request.auth.token.role == role;
+    }
+
+    function userOwnsResource(userId) {
+        return request.auth.uid == userId;
     }
 
     match /Users/{userId} {
       // allow user to read, admin to write
-      allow read: if isSignedIn() && (request.auth.uid == userId || isAdmin())
-      allow write: if isSignedIn() && (request.auth.uid == userId || isAdmin())
+      allow read: if isSignedIn() && (userOwnsResource(userId) || isAdmin())
+      allow write: if isSignedIn() && (userOwnsResource(userId) || isAdmin())
     }
 
     match /Images/{imageId} {
       // allow owner to read
-      // allow owner to write
-      allow read: if isSignedIn() && request.auth.uid == get(/databases/$(database)/documents/Images/$(imageId)).owner
-      allow write: if isSignedIn()
+      // allow anyone to write
+      allow read: if isSignedIn() && (isAdmin() || userOwnsResource(get(/databases/$(database)/documents/Images/$(imageId)).owner))
+      allow write: if isSignedIn() && (isAdmin() || userOwnsResource(get(/databases/$(database)/documents/Images/$(imageId)).owner))
     }
 
     match /Logs/{logId} {

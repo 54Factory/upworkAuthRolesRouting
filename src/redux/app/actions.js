@@ -7,6 +7,7 @@ export function getView(width) {
   }
   return newView;
 }
+
 const actions = {
   COLLPSE_CHANGE: 'COLLPSE_CHANGE',
   COLLPSE_OPEN_DRAWER: 'COLLPSE_OPEN_DRAWER',
@@ -15,9 +16,11 @@ const actions = {
   CHANGE_CURRENT: 'CHANGE_CURRENT',
   CLOSE_ALL: 'CLOSE_ALL',
   SET_LOADING: 'SET_LOADING',
+
   toggleCollapsed: () => ({
     type: actions.COLLPSE_CHANGE
   }),
+
   toggleAll: (width, height) => {
     const view = getView(width);
     const collapsed = view !== 'DesktopView';
@@ -28,21 +31,27 @@ const actions = {
       height
     };
   },
+
   toggleOpenDrawer: () => ({
     type: actions.COLLPSE_OPEN_DRAWER
   }),
+
   changeOpenKeys: openKeys => ({
     type: actions.CHANGE_OPEN_KEYS,
     openKeys
   }),
+
   changeCurrent: current => ({
     type: actions.CHANGE_CURRENT,
     current
   }),
+
   closeAll: () => ({ type: actions.CLOSE_ALL }),
+
   setLoading: loading => ({
     type: actions.SET_LOADING,
     loading
   })
 };
+
 export default actions;

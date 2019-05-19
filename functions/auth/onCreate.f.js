@@ -14,7 +14,7 @@ try { admin.initializeApp(); } catch (e) { console.log(); }
 exports.default = functions.auth.user().onCreate((userRecord, context) => {
   let promises = [];
   /**
-   * Test code to create admin
+   * Test code to create admin user
    */
   if (userRecord.email === 'admin@admin.co') {
     const newAdmin = admin.auth().setCustomUserClaims(userRecord.uid, { role: 'ADMIN' })

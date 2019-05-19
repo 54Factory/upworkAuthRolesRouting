@@ -1,7 +1,11 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 
-try { admin.initializeApp() } catch (e) {}
+
+function initApp() {
+  try { admin.initializeApp() } catch (e) {}
+}
+exports.initApp = initApp;
 
 /**
  * Helper function to log errors

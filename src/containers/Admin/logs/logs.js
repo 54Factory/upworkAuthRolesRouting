@@ -86,7 +86,7 @@ class Logs extends Component {
       key: 'function',
       width: view === 'MobileView' ? '40%' : '20%',
       filters: [
-        { text: 'createUser', value: 'createUser' }
+        { text: 'createUser', value: 'createUser' },
       ],
       filteredValue: filteredInfo.function || null,
       onFilter: (value, record) => record.function.includes(value),

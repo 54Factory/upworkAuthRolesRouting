@@ -51,40 +51,35 @@ const RestrictedRoute = ({ component: Component, allowed, ...rest }) => (
 const PublicRoutes = ({ history, isLoggedIn, role, loading }) => {
   return (
     <ConnectedRouter history={history}>
-        { loading ? (
-          <LoadingOverlay/>
-        ) : (
-          <div>
-            <Route
-              exact
-              path={'/'}
-              component={asyncComponent(() => import('./containers/Page/signin'))}
-            />
-            <Route
-              exact
-              path={'/signin'}
-              component={asyncComponent(() => import('./containers/Page/signin'))}
-            />
-            <Route
-              path={'/password_reset'}
-              component={asyncComponent(() => import('./containers/Page/passwordReset'))}
-            />
-            <Route
-              path={'/invite'}
-              component={asyncComponent(() => import('./containers/Page/invite'))}
-            />
-            <RestrictedRoute
-              path={'/admin'}
-              component={Admin}
-              allowed={isLoggedIn && role === 'ADMIN'}
-            />
-            <RestrictedRoute
-              path={'/customer'}
-              component={asyncComponent(() => import('./containers/Customer'))}
-              allowed={isLoggedIn && role === 'CUSTOMER'}
-            />
-          </div>
-        )}
+    { loading ? (
+      <LoadingOverlay/>
+    ) : (
+      <div>
+        <Route
+          exact
+          path={'/'}
+          component={asyncComponent(() => import('./containers/Page/signin'))}
+        />
+        <Route
+          exact
+          path={'/signin'}
+          component={asyncComponent(() => import('./containers/Page/signin'))}
+        />
+        <Route
+          path={'/password_reset'}
+          component={asyncComponent(() => import('./containers/Page/passwordReset'))}
+        />
+        <Route
+          path={'/invite'}
+          component={asyncComponent(() => import('./containers/Page/invite'))}
+        />
+        <RestrictedRoute
+          path={'/admin'}
+          component={Admin}
+          allowed={isLoggedIn && role === 'ADMIN'}
+        />
+      </div>
+    )}
     </ConnectedRouter>
   );
 };

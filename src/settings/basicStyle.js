@@ -3,10 +3,13 @@ const rowStyle = {
   display: 'flex',
   flexFlow: 'row wrap',
 };
+
 const colStyle = {
   marginBottom: '16px',
 };
+
 const gutter = 16;
+
 const basicStyle = {
   rowStyle,
   colStyle,

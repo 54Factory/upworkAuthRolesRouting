@@ -12,7 +12,7 @@ try { admin.initializeApp(); } catch (e) { console.log(e); }
  * @param {Object} context Details about the event.
  */
 exports.default = functions.auth.user().onDelete((userRecord, context) => {
-  // Create new user in Users collection
+  // Remove user from users collection
   const user = admin.firestore().collection('Users')
     .doc(userRecord.uid)
     .delete()
