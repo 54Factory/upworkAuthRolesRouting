@@ -49,7 +49,7 @@ export class Admin extends Component {
                 <Content
                   className="isomorphicContent"
                   style={{
-                    padding: '70px 0 0',
+                    padding: '55px 0 0',
                     flexShrink: '0',
                     background: '#f1f3f6',
                     position: 'relative'

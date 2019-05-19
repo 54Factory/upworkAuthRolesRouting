@@ -3,15 +3,17 @@ import { palette } from 'styled-theme';
 import { transition, borderRadius } from '../../settings/style-util';
 import WithDirection from '../../settings/withDirection';
 
+const TOPBAR_HEIGHT = 55;
+
 const SidebarWrapper = styled.div`
   .isomorphicSidebar {
     z-index: 1000;
-    background: ${palette('secondary', 0)};
+    background: #1B253E;
     width: 280px;
     flex: 0 0 280px;
 
     .scrollarea {
-      height: calc(100vh - 70px);
+      height: calc(100vh - ${TOPBAR_HEIGHT}px);
     }
 
     @media only screen and (max-width: 767px) {
@@ -29,21 +31,19 @@ const SidebarWrapper = styled.div`
     }
 
     .isoLogoWrapper {
-      height: 70px;
-      background: rgba(0, 0, 0, 0.3);
+      height: ${TOPBAR_HEIGHT}px;
+      background: #001529;
       margin: 0;
       padding: 0 10px;
       text-align: center;
       overflow: hidden;
-      ${borderRadius()};
 
       h3 {
-        font-size: 21px;
-        font-weight: 300;
-        line-height: 70px;
-        letter-spacing: 3px;
-        text-transform: uppercase;
-        color: ${palette('grayscale', 6)};
+        font-size: 24px;
+        font-weight: 400;
+        line-height: ${TOPBAR_HEIGHT}px;
+        font-family: "SF UI Text";
+        color: #fff;
         display: block;
         text-decoration: none;
       }
@@ -62,8 +62,8 @@ const SidebarWrapper = styled.div`
     }
 
     .isoDashboardMenu {
-      padding-top: 35px;
-      padding-bottom: 35px;
+      padding-top: 40px;
+      padding-bottom: 40px;
       background: transparent;
 
       a {
@@ -88,8 +88,7 @@ const SidebarWrapper = styled.div`
         i {
           font-size: 19px;
           color: inherit;
-          margin: ${props =>
-            props['data-rtl'] === 'rtl' ? '0 0 0 30px' : '0 30px 0 0'};
+          margin: 0 30px 0 0;
           width: 18px;
           ${transition()};
         }
@@ -110,7 +109,7 @@ const SidebarWrapper = styled.div`
       }
 
       .ant-menu-item-selected {
-        background-color: rgba(0, 0, 0, 0.4) !important;
+        background-color: #1890FF;
         .anticon {
           color: #fff;
         }

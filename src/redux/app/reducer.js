@@ -15,9 +15,9 @@ const initState = {
 };
 export default function appReducer(state = initState, action) {
   switch (action.type) {
-    case actions.COLLPSE_CHANGE:
+    case actions.COLLAPSE_CHANGE:
       return { ...state, collapsed: !state.collapsed };
-    case actions.COLLPSE_OPEN_DRAWER:
+    case actions.COLLAPSE_OPEN_DRAWER:
       return { ...state, openDrawer: !state.openDrawer };
     case actions.TOGGLE_ALL:
       if (state.view !== action.view || action.height !== state.height) {

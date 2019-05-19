@@ -1,16 +1,16 @@
 const options = [
-  {
-    key: 'users',
-    label: 'Users',
-    leftIcon: 'ion-person',
-    role: 'ADMIN'
-  },
-  {
-    key: 'customers',
-    label: 'Customers',
-    leftIcon: 'ion-cash',
-    role: 'ADMIN'
-  },
+  //  {
+  //    key: 'users',
+  //    label: 'Users',
+  //    leftIcon: 'ion-person',
+  //    role: 'ADMIN'
+  //  },
+  //  {
+  //    key: 'customers',
+  //    label: 'Customers',
+  //    leftIcon: 'ion-cash',
+  //    role: 'ADMIN'
+  //  },
   {
     key: 'locations',
     label: 'Locations',
@@ -23,19 +23,18 @@ const options = [
     leftIcon: 'ion-clipboard',
     role: 'ADMIN'
   },
-  {
-    key: 'drivers',
-    label: 'Drivers',
-    leftIcon: 'ion-android-people',
-    role: 'ADMIN'
-  },
+  //  {
+  //    key: 'drivers',
+  //    label: 'Drivers',
+  //    leftIcon: 'ion-android-people',
+  //    role: 'ADMIN'
+  //  },
   {
     key: 'trucks',
     label: 'Trucks',
     leftIcon: 'ion-android-car',
     role: 'ADMIN'
   },
-
   {
     key: 'logs',
     label: 'Logs',

@@ -97,8 +97,8 @@ theme.palette = {
 };
 
 theme.fonts = {
-  primary: 'Roboto, sans-serif',
-  pre: 'Consolas, Liberation Mono, Menlo, Courier, monospace',
+  primary: 'Pingfang SC, SF UI Text',
+  pre: 'Consolas, Helvetica Neue'
 };
 
 export default theme;

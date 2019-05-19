@@ -6,7 +6,6 @@ import { Layout, } from 'antd';
 import options from './options';
 import Scrollbars from '../../components/utility/customScrollBar.js';
 import Menu from '../../components/uielements/menu';
-import IntlMessages from '../../components/utility/intlMessages';
 import SidebarWrapper from './sidebar.style';
 import appActions from '../../redux/app/actions';
 import Logo from '../../components/utility/logo';
@@ -22,6 +21,7 @@ const {
   changeCurrent,
   toggleCollapsed
 } = appActions;
+
 const stripTrailingSlash = str => {
   if (str.substr(-1) === '/') {
     return str.substr(0, str.length - 1);
@@ -90,7 +90,7 @@ class Sidebar extends Component {
             return (
               <Menu.Item style={submenuStyle} key={child.key}>
                 <Link style={submenuColor} to={linkTo}>
-                  <IntlMessages id={child.label} />
+                  {child.label}
                 </Link>
               </Menu.Item>
             );

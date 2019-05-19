@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 
 const LogsStyleWrapper = styled.div`
+  width: 100%;
+
   .logs-top-bar {
     margin-bottom: 10px;
     display: flex;

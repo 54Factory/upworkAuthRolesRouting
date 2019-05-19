@@ -3,16 +3,18 @@ export default {
 };
 
 const siteConfig = {
-  siteName: 'EDEN GREEN',
+  siteName: 'EdenGreen',
   siteIcon: 'ion-leaf',
   footerText: 'Eden Green Energy'
 };
+
 const themeConfig = {
   topbar: 'themedefault',
   sidebar: 'themedefault',
   layout: 'themedefault',
   theme: 'themedefault',
 };
+
 const language = 'english';
 
 const jwtConfig = {
