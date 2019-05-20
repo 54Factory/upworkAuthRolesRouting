@@ -11,7 +11,6 @@ exports.initApp = initApp;
  * Helper function to log errors
  */
 function logError(name, error) {
-  console.log(error);
   return admin.firestore()
     .collection('Logs').add({
       function_name: name,

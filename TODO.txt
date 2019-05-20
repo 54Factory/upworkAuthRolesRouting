@@ -114,6 +114,7 @@ TODO:
     - create react components for location-page,
     - create react components for /locations/add and /locations/{locationId}
     - First build these using dummy data
+
   - Pickups page
     - create react components for pickups-page, /pickups/add, /pickups/{pickupId}
     - Using dummy data

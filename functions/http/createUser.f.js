@@ -70,7 +70,7 @@ function createSetupLink(id, password) {
     })
     .then(ref => ref.get())
     .catch(err => {
-      tools.logError('createUser', err);
+      tools.logError('httpCreateUser', err);
       throw new functions.HttpsError(
         'internal',
         err.message
@@ -166,7 +166,7 @@ exports.default = functions.https.onCall((data, context) => {
       .then(() => createSetupLink(id, password)))
       .then(doc => sendInvite(display_name, email, doc.id))
       .catch(err => {
-        tools.logError('createUser', err);
+        tools.logError('httpCreateUser', err);
         throw new functions.https.HttpsError(
           'internal',
           err.message

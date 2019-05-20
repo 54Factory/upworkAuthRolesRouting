@@ -7,7 +7,7 @@ const PaperStyle = styled.div`
 
   .paper-title {
     width: 100%;
-    padding: 0 20px;
+    padding: 0 16px;
     height: 55px;
     border-bottom: 1px solid ${palette("border", 0)};
     > h3 {
@@ -27,7 +27,7 @@ const PaperStyle = styled.div`
 
   .paper-content {
     width: 100%;
-    padding: 20px;
+    padding: 16px;
     margin: 0;
   }
 `;

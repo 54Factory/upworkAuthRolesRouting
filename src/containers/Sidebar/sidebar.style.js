@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import { palette } from 'styled-theme';
-import { transition, borderRadius } from '../../settings/style-util';
-import WithDirection from '../../settings/withDirection';
+import { transition } from '@settings/style-util';
 
 const TOPBAR_HEIGHT = 55;
 
@@ -39,7 +38,7 @@ const SidebarWrapper = styled.div`
       overflow: hidden;
 
       h3 {
-        font-size: 24px;
+        font-size: 20px;
         font-weight: 400;
         line-height: ${TOPBAR_HEIGHT}px;
         font-family: "SF UI Text";
@@ -62,8 +61,8 @@ const SidebarWrapper = styled.div`
     }
 
     .isoDashboardMenu {
-      padding-top: 40px;
-      padding-bottom: 40px;
+      padding-top: 24px;
+      padding-bottom: 24px;
       background: transparent;
 
       a {
@@ -257,4 +256,4 @@ const SidebarWrapper = styled.div`
   }
 `;
 
-export default WithDirection(SidebarWrapper);
+export default SidebarWrapper;

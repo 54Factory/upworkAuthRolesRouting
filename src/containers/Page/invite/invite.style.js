@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { palette } from "styled-theme";
-import WithDirection from "../../../settings/withDirection";
 import bgImage from "../../../image/sign.jpg";
 
 const InvitePageStyleWrapper = styled.div`
@@ -211,4 +210,4 @@ const InvitePageStyleWrapper = styled.div`
 
 `;
 
-export default WithDirection(InvitePageStyleWrapper);
+export default InvitePageStyleWrapper;

@@ -10,10 +10,15 @@ const colStyle = {
 
 const gutter = 16;
 
+const appBar = {
+  height: 56
+};
+
 const basicStyle = {
   rowStyle,
   colStyle,
   gutter,
+  appBar
 };
 
 export default basicStyle;

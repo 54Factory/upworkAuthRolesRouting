@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { palette } from "styled-theme";
 import bgImage from "../../../image/sign.jpg";
-import WithDirection from "../../../settings/withDirection";
 
 const PasswordResetStyleWrapper = styled.div`
   width: 100%;
@@ -105,4 +104,4 @@ const PasswordResetStyleWrapper = styled.div`
 
 `;
 
-export default WithDirection(PasswordResetStyleWrapper);
+export default PasswordResetStyleWrapper;

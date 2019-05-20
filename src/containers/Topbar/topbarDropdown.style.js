@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { palette } from "styled-theme";
 import { transition, borderRadius, boxShadow } from "../../settings/style-util";
-import WithDirection from "../../settings/withDirection";
 
 const TopbarDropdownWrapper = styled.div`
   display: flex;
@@ -286,4 +285,4 @@ const TopbarDropdownWrapper = styled.div`
   }
 `;
 
-export default WithDirection(TopbarDropdownWrapper);
+export default TopbarDropdownWrapper;

@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { palette } from "styled-theme";
 import bgImage from "../../../image/sign.jpg";
-import WithDirection from "../../../settings/withDirection";
 
 const SignInStyleWrapper = styled.div`
   width: 100%;
@@ -203,4 +202,4 @@ const SignInStyleWrapper = styled.div`
   }
 `;
 
-export default WithDirection(SignInStyleWrapper);
+export default SignInStyleWrapper;
