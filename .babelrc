@@ -5,9 +5,9 @@
       "root": ["./src"],
       "alias": {
         "@": "./",
-        "@components": "./components",
-        "@containers": "./containers",
-        "@settings": "./settings"
+        "@components": "./src/components",
+        "@containers": "./src/containers",
+        "@settings": "./src/settings"
       }
     }]
   ]
